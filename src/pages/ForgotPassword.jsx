@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
-import { assets } from '../components/landing/landingContent'
 import EmailIcon from '../assets/Email.svg'
 import LockIcon from '../assets/Locksvg.svg'
 import EyeIcon from '../assets/Eye.svg'
@@ -28,11 +27,11 @@ export default function ForgotPassword() {
   const [loading, setLoading] = React.useState(false)
   const [authError, setAuthError] = React.useState(null)
   const [otpError, setOtpError] = React.useState(null)
+  const [resendNotice, setResendNotice] = useState('');
   const [resetError, setResetError] = React.useState(null)
 
   // Interactive flow states
   const [successEmail, setSuccessEmail] = React.useState('')
-  const [submitCount, setSubmitCount] = React.useState(0)
   const [showPassword, setShowPassword] = React.useState(false)
   const [showConfirm, setShowConfirm] = React.useState(false)
   const [countdown, setCountdown] = React.useState(3)
@@ -557,6 +556,11 @@ export default function ForgotPassword() {
                 >
                   Kirim ulang
                 </button>
+                {resendNotice && (
+                  <p className="mt-2 text-sm text-green-600">
+                    {resendNotice}
+                  </p>
+                )}
               </div>
 
               {/* Flow Guide Card */}

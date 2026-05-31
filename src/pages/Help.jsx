@@ -6,7 +6,6 @@ import Button from '../components/ui/Button'
 import focusIcon from '../assets/Focus.svg'
 import lightingIcon from '../assets/GoodLighting.svg'
 import paperIcon from '../assets/Paper.svg'
-import askBlueIcon from '../assets/AskBlue.svg'
 import infoBlueIcon from '../assets/InfoBlue.svg'
 
 const FAQ_ITEMS = [

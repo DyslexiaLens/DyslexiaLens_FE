@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { AppContext } from '../context/AppContext'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { assets, navigation } from './landing/landingContent'
 
 // Import the specific assets requested for mobile view
@@ -17,7 +17,6 @@ import { logout as logoutRequest } from '../services/authService'
 export default function Header() {
   const { theme, toggleTheme, isLoggedIn, logout, user } = useContext(AppContext)
   const navigate = useNavigate()
-  const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Close mobile drawer when Escape key is pressed

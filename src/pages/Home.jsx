@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import SectionBadge from '../components/landing/SectionBadge'
 import SectionHeading from '../components/landing/SectionHeading'
@@ -36,7 +36,7 @@ function HeroHighlight({ children }) {
 export default function Home() {
   const { theme, isLoggedIn } = React.useContext(AppContext)
   const navigate = useNavigate()
-  const [primaryLoading, setPrimaryLoading] = React.useState(false)
+  const [primaryLoading] = React.useState(false)
   const [secondaryLoading, setSecondaryLoading] = React.useState(false)
 
   const handleAction = (setter) => () => {

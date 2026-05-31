@@ -20,7 +20,6 @@ import networkErrLight     from '../assets/NetworkErrorLight.svg'
 import networkErrDark      from '../assets/NetworkErrorDark.svg'
 import serverErrLight      from '../assets/ServerErrorLight.svg'
 import serverErrDark       from '../assets/ServerErrorDark.svg'
-import logoMark            from '../assets/logoMark.svg'
 import { detectDyslexia, translateImageText } from '../services/aiService'
 
 // ── Back arrow SVG (inline — no separate asset needed) ───────────────────────
@@ -212,9 +211,6 @@ export default function Upload() {
     : (isDark ? 'border-[#4a5565]' : 'border-[#d1d5dc]')
 
   const uploadCircleCls = isDark ? 'bg-[rgba(28,57,142,0.3)]' : 'bg-[#dbeafe]'
-  const cancelBtnCls    = isDark
-    ? 'bg-[rgba(38,38,38,0.3)] border-[#4a5565] text-[#d1d5dc]'
-    : 'bg-white border-[#d1d5dc] text-[#364153]'
   const pickFileBtnCls  = isDark
     ? 'bg-[rgba(38,38,38,0.3)] border-[#4a5565] text-[#d1d5dc]'
     : 'bg-white border-[#d1d5dc] text-[#364153]'

@@ -30,10 +30,6 @@ const headerSearch = makeSvg(
   '<circle cx="10" cy="10" r="5.75" stroke="#4a5565" stroke-width="1.75"/><path d="M14.25 14.25 19 19" stroke="#4a5565" stroke-width="1.75" stroke-linecap="round"/>',
 );
 
-const bellIcon = makeSvg(
-  '<path d="M12 4.75a4.5 4.5 0 0 0-4.5 4.5v2.2c0 .48-.17.95-.5 1.32L5.5 15h13l-1.5-2.23a1.98 1.98 0 0 1-.5-1.32v-2.2a4.5 4.5 0 0 0-4.5-4.5Z" fill="#4a5565"/><path d="M9.5 17a2.5 2.5 0 0 0 5 0" stroke="#4a5565" stroke-width="1.75" stroke-linecap="round"/>',
-);
-
 const arrowRightIcon = makeSvg(
   '<path d="M5 12h11" stroke="#155dfc" stroke-width="2" stroke-linecap="round"/><path d="m12 7 4.5 5-4.5 5" stroke="#155dfc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
 );
@@ -44,16 +40,6 @@ const mailIcon = makeSvg(
 
 const disclaimerInfoIcon = makeSvg(
   '<circle cx="12" cy="12" r="8" stroke="#6a7282" stroke-width="1.75"/><path d="M12 10.25v5" stroke="#6a7282" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="8.25" r=".9" fill="#6a7282"/>',
-);
-
-const scanIcon = makeSvg(
-  '<path d="M8.5 6.5H7a.5.5 0 0 0-.5.5v1.5" stroke="#155dfc" stroke-width="1.75" stroke-linecap="round"/><path d="M16.5 6.5H18a.5.5 0 0 1 .5.5v1.5" stroke="#155dfc" stroke-width="1.75" stroke-linecap="round"/><path d="M8.5 17.5H7a.5.5 0 0 1-.5-.5v-1.5" stroke="#155dfc" stroke-width="1.75" stroke-linecap="round"/><path d="M16.5 17.5H18a.5.5 0 0 0 .5-.5v-1.5" stroke="#155dfc" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="12" r="3.25" stroke="#155dfc" stroke-width="1.75"/>',
-);
-
-const liveDotIcon = makeSvg('<circle cx="12" cy="12" r="4" fill="#00c950"/>');
-
-const pulseIcon = makeSvg(
-  '<path d="M4 12h3l1.5-3 2.5 7 2-4h7" stroke="#9810fa" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>',
 );
 
 const solutionBlueIcon = lightingAsset;

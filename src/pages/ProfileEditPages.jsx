@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import EmailIcon from '../assets/Email.svg'
-import RedX from '../assets/RedX.svg'
 import PasswordStrength from '../components/PasswordStrength'
 import { AppContext } from '../context/AppContext'
 import Button from '../components/ui/Button'

@@ -544,7 +544,7 @@ export default function History() {
         </h3>
         <p className={`text-sm leading-relaxed mb-6 ${subTextCls}`}>
           Apakah Anda yakin ingin menghapus file{' '}
-          <strong className="font-semibold text-[var(--text-primary)]">"{selectedItem?.fileName}"</strong> dari riwayat?
+          <strong className="font-semibold text-[var(--text-primary)]">{selectedItem?.fileName}</strong> dari riwayat?
           Tindakan ini bersifat permanen dan tidak dapat dibatalkan.
         </p>
         <div className="flex gap-3 justify-end">
