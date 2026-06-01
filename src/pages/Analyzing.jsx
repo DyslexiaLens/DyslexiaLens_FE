@@ -2,6 +2,68 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import Button from '../components/ui/Button'
+import { detectDyslexia, translateImageText } from '../services/aiService'
+
+function normalizeUploadError(error, mode) {
+  if (!error.response) {
+    return 'network'
+  }
+
+  const status = error.response.status
+  const message = String(error.response.data?.message || '').toLowerCase()
+  const detail = String(error.response.data?.errors?.[0]?.msg || '').toLowerCase()
+  const combined = `${message} ${detail}`
+
+  if (status === 413 || combined.includes('size')) {
+    return 'size'
+  }
+
+  if (status === 400 && (combined.includes('image') || combined.includes('jpg') || combined.includes('png') || combined.includes('format'))) {
+    return 'format'
+  }
+
+  if (mode === 'detect' && (combined.includes('grid') || combined.includes('template') || combined.includes('blur') || combined.includes('buram') || combined.includes('dark') || combined.includes('gelap') || combined.includes('cropped') || combined.includes('terpotong') || combined.includes('not detected'))) {
+    return 'scan'
+  }
+
+  if (combined.includes('timeout')) {
+    return 'timeout'
+  }
+
+  if (combined.includes('base64') || combined.includes('corrupt') || combined.includes('handshake') || combined.includes('decode image') || combined.includes('could not decode image') || combined.includes('invalid image')) {
+    return 'base64'
+  }
+
+  if (combined.includes('unavailable') || combined.includes('503') || combined.includes('bad gateway')) {
+    return 'server'
+  }
+
+  return 'server'
+}
+
+const getUploadErrorMessage = (type, fallbackMessage) => {
+  if (type === 'size') {
+    return 'Ukuran file terlalu besar. Maksimal 10MB.'
+  }
+
+  if (type === 'scan') {
+    return 'Kertas grid tidak terdeteksi. Ambil ulang foto dengan pencahayaan lebih baik, posisi lebih lurus, dan pastikan template resmi terlihat penuh.'
+  }
+
+  if (type === 'timeout') {
+    return 'Server AI terlalu lama merespons. Coba unggah ulang dalam beberapa saat.'
+  }
+
+  if (type === 'base64') {
+    return 'Data gambar gagal dikirim ke server AI. Coba unggah ulang file yang sama.'
+  }
+
+  if (type === 'format') {
+    return 'Format file tidak didukung. Gunakan JPG atau PNG yang jelas.'
+  }
+
+  return fallbackMessage || 'Terjadi kesalahan saat memproses file.'
+}
 
 export default function Analyzing() {
   const { theme } = useContext(AppContext)
@@ -9,37 +71,99 @@ export default function Analyzing() {
   const location = useLocation()
   const navigate = useNavigate()
 
+  const file = location.state?.file
+  const imageUrl = location.state?.imageUrl
   const mode = location.state?.mode || 'detect'
 
   const [progress, setProgress] = useState(0)
   const [timeLeft, setTimeLeft] = useState('1:56')
   const [isCompleted, setIsCompleted] = useState(false)
+  const [apiResult, setApiResult] = useState(null)
+  const [apiError, setApiError] = useState(null)
 
-  // Simulation logic
+  // Redirect to upload if no file is present
   useEffect(() => {
-    const totalDuration = 8000
-    const intervalTime = 80
-    const totalSteps = totalDuration / intervalTime
-    const stepIncrement = 100 / totalSteps
+    if (!file) {
+      navigate('/upload')
+    }
+  }, [file, navigate])
 
-    let currentStep = 0
-    const timer = setInterval(() => {
-      currentStep++
-      const newProgress = Math.min(100, currentStep * stepIncrement)
-      setProgress(newProgress)
+  // Trigger real API call
+  useEffect(() => {
+    if (!file) return
 
-      // Map progress to countdown timer (116 seconds down to 0)
-      const remainingSeconds = Math.round(116 - (newProgress / 100) * 116)
-      setTimeLeft(formatSeconds(remainingSeconds))
+    let isMounted = true
 
-      if (newProgress >= 100) {
-        clearInterval(timer)
-        setIsCompleted(true)
+    const runAnalysis = async () => {
+      try {
+        const response = mode === 'detect'
+          ? await detectDyslexia(file)
+          : await translateImageText(file)
+
+        if (isMounted) {
+          setApiResult(response)
+        }
+      } catch (error) {
+        if (isMounted) {
+          setApiError(error)
+        }
       }
+    }
+
+    runAnalysis()
+
+    return () => {
+      isMounted = false
+    }
+  }, [file, mode])
+
+  // Progress simulation combined with real API state
+  useEffect(() => {
+    if (!file) return
+
+    const intervalTime = 80
+    let currentProgress = 0
+
+    const timer = setInterval(() => {
+      if (apiError) {
+        clearInterval(timer)
+        const uploadErrorType = normalizeUploadError(apiError, mode)
+        const errorMessage = getUploadErrorMessage(uploadErrorType, apiError.response?.data?.message || apiError.message)
+        navigate('/result', {
+          state: {
+            mode,
+            imageUrl,
+            errorType: uploadErrorType,
+            errorMessage,
+          },
+        })
+        return
+      }
+
+      if (apiResult) {
+        // Fast-forward to 100% when success
+        setProgress(100)
+        setTimeLeft('0:00')
+        setIsCompleted(true)
+        clearInterval(timer)
+        return
+      }
+
+      // Progress animation increments up to 99%
+      if (currentProgress < 95) {
+        currentProgress += 1.5 // normal pace
+      } else if (currentProgress < 99) {
+        currentProgress += 0.2 // slow down near completion while waiting for API
+      }
+
+      setProgress(currentProgress)
+      
+      const remainingSeconds = Math.round(116 - (currentProgress / 100) * 116)
+      setTimeLeft(formatSeconds(remainingSeconds))
     }, intervalTime)
 
     return () => clearInterval(timer)
-  }, [])
+  }, [file, apiResult, apiError, navigate, mode, imageUrl])
 
   const formatSeconds = (totalSec) => {
     const mins = Math.floor(totalSec / 60)
@@ -48,7 +172,14 @@ export default function Analyzing() {
   }
 
   const handleProceed = () => {
-    navigate('/result', { state: { mode, fileUploaded: true, imageUrl: location.state?.imageUrl } })
+    navigate('/result', {
+      state: {
+        mode,
+        imageUrl,
+        analysis: apiResult?.result || null,
+        history: apiResult?.history || null,
+      },
+    })
   }
 
   // Determine current active checklist phase based on progress

@@ -4,23 +4,23 @@ import { AppContext } from '../context/AppContext'
 import Button from '../components/ui/Button'
 
 // ── Local asset imports (use exported SVGs from assets/) ─────────────────────
-import tipsIcon            from '../assets/Tips.svg'
-import uploadIcon          from '../assets/Uploadsvg.svg'
-import checklistLightIcon  from '../assets/ChecklistUploadLight.svg'
-import checklistDarkIcon   from '../assets/ChecklistUploadDark.svg'
-import detectOnIcon        from '../assets/DetectOn.svg'
-import detectOffIcon       from '../assets/DetectOff.svg'
-import translateOnIcon     from '../assets/TranslateOn.svg'
-import translateOffIcon    from '../assets/TranslateOff.svg'
-import errorFormatLight    from '../assets/ErrorFormatLight.svg'
-import errorFormatDark     from '../assets/ErrorFormatDark.svg'
-import fileSizeLight       from '../assets/FileSizeLight.svg'
-import fileSizeDark        from '../assets/FileSizeDark.svg'
-import networkErrLight     from '../assets/NetworkErrorLight.svg'
-import networkErrDark      from '../assets/NetworkErrorDark.svg'
-import serverErrLight      from '../assets/ServerErrorLight.svg'
-import serverErrDark       from '../assets/ServerErrorDark.svg'
-import { detectDyslexia, generatePracticeText, translateImageText } from '../services/aiService'
+import tipsIcon from '../assets/Tips.svg'
+import uploadIcon from '../assets/Uploadsvg.svg'
+import checklistLightIcon from '../assets/ChecklistUploadLight.svg'
+import checklistDarkIcon from '../assets/ChecklistUploadDark.svg'
+import detectOnIcon from '../assets/DetectOn.svg'
+import detectOffIcon from '../assets/DetectOff.svg'
+import translateOnIcon from '../assets/TranslateOn.svg'
+import translateOffIcon from '../assets/TranslateOff.svg'
+import errorFormatLight from '../assets/ErrorFormatLight.svg'
+import errorFormatDark from '../assets/ErrorFormatDark.svg'
+import fileSizeLight from '../assets/FileSizeLight.svg'
+import fileSizeDark from '../assets/FileSizeDark.svg'
+import networkErrLight from '../assets/NetworkErrorLight.svg'
+import networkErrDark from '../assets/NetworkErrorDark.svg'
+import serverErrLight from '../assets/ServerErrorLight.svg'
+import serverErrDark from '../assets/ServerErrorDark.svg'
+import { generatePracticeText } from '../services/aiService'
 
 // ── Back arrow SVG (inline — no separate asset needed) ───────────────────────
 function BackArrow({ isDark }) {
@@ -47,32 +47,32 @@ const ERROR_CONFIG = {
   format: {
     // Light: node 11:29935 — bg #fef2f2, border #e7000b, text #e7000b
     // Dark:  node 11:30150 — bg rgba(130,24,26,0.2), border #9f0712, text #ff6467
-    lightBg: '#fef2f2',           lightBorder: '#e7000b',  lightText: '#e7000b',
-    darkBg:  'rgba(130,24,26,0.2)', darkBorder: '#9f0712', darkText: '#ff6467',
+    lightBg: '#fef2f2', lightBorder: '#e7000b', lightText: '#e7000b',
+    darkBg: 'rgba(130,24,26,0.2)', darkBorder: '#9f0712', darkText: '#ff6467',
     title: 'Format File Tidak Didukung',
     message: 'Format file tidak didukung. Hanya JPG dan PNG yang diperbolehkan.',
   },
   size: {
     // Light: node 11:30357 — bg #fff7ed, border #ff6900, text #9f2d00
     // Dark:  node 11:30572 — bg rgba(126,42,12,0.2), border #9f2d00, text #ff8904
-    lightBg: '#fff7ed',              lightBorder: '#ff6900', lightText: '#9f2d00',
-    darkBg:  'rgba(126,42,12,0.2)',  darkBorder: '#9f2d00', darkText: '#ff8904',
+    lightBg: '#fff7ed', lightBorder: '#ff6900', lightText: '#9f2d00',
+    darkBg: 'rgba(126,42,12,0.2)', darkBorder: '#9f2d00', darkText: '#ff8904',
     title: 'Ukuran File Terlalu Besar',
     message: null, // computed dynamically
   },
   network: {
     // Light: node 11:30779 — bg #faf5ff, border #ad46ff, text #6e11b0
     // Dark:  node 11:30993 — bg rgba(89,22,139,0.2), border #6e11b0, text #c27aff
-    lightBg: '#faf5ff',              lightBorder: '#ad46ff', lightText: '#6e11b0',
-    darkBg:  'rgba(89,22,139,0.2)', darkBorder: '#6e11b0',  darkText: '#c27aff',
+    lightBg: '#faf5ff', lightBorder: '#ad46ff', lightText: '#6e11b0',
+    darkBg: 'rgba(89,22,139,0.2)', darkBorder: '#6e11b0', darkText: '#c27aff',
     title: 'Koneksi Bermasalah',
     message: 'Koneksi internet bermasalah. Periksa koneksi Anda dan coba lagi.',
   },
   server: {
     // Light: node 11:31199 — bg #fefce8, border #f0b100, text #894b00
     // Dark:  node 11:31412 — bg rgba(115,62,10,0.2), border #894b00, text #fdc700
-    lightBg: '#fefce8',              lightBorder: '#f0b100', lightText: '#894b00',
-    darkBg:  'rgba(115,62,10,0.2)', darkBorder: '#894b00',  darkText: '#fdc700',
+    lightBg: '#fefce8', lightBorder: '#f0b100', lightText: '#894b00',
+    darkBg: 'rgba(115,62,10,0.2)', darkBorder: '#894b00', darkText: '#fdc700',
     title: 'Server Gagal Memproses',
     message: 'Server gagal memproses file. Silakan coba beberapa saat lagi.',
   },
@@ -80,8 +80,8 @@ const ERROR_CONFIG = {
 
 // ── Validate file ────────────────────────────────────────────────────────────
 function validateFile(file) {
-  const name     = file.name.toLowerCase()
-  const ext      = name.split('.').pop()
+  const name = file.name.toLowerCase()
+  const ext = name.split('.').pop()
   const maxBytes = 10 * 1024 * 1024
 
   if (!['jpg', 'jpeg', 'png'].includes(ext)) return 'format'
@@ -89,53 +89,17 @@ function validateFile(file) {
   return null
 }
 
-function normalizeUploadError(error, mode) {
-  if (!error.response) {
-    return 'network'
-  }
 
-  const status = error.response.status
-  const message = String(error.response.data?.message || '').toLowerCase()
-  const detail = String(error.response.data?.errors?.[0]?.msg || '').toLowerCase()
-  const combined = `${message} ${detail}`
-
-  if (status === 413 || combined.includes('size')) {
-    return 'size'
-  }
-
-  if (status === 400 && (combined.includes('image') || combined.includes('jpg') || combined.includes('png') || combined.includes('format'))) {
-    return 'format'
-  }
-
-  if (mode === 'detect' && (combined.includes('grid') || combined.includes('template') || combined.includes('blur') || combined.includes('buram') || combined.includes('dark') || combined.includes('gelap') || combined.includes('cropped') || combined.includes('terpotong') || combined.includes('not detected'))) {
-    return 'scan'
-  }
-
-  if (combined.includes('timeout')) {
-    return 'timeout'
-  }
-
-  if (combined.includes('base64') || combined.includes('corrupt') || combined.includes('handshake') || combined.includes('decode image') || combined.includes('could not decode image') || combined.includes('invalid image')) {
-    return 'base64'
-  }
-
-  if (combined.includes('unavailable') || combined.includes('503') || combined.includes('bad gateway')) {
-    return 'server'
-  }
-
-  return 'server'
-}
 
 export default function Upload() {
-  const { theme, isLoggedIn, authReady }  = React.useContext(AppContext)
-  const navigate   = useNavigate()
-  const isDark     = theme === 'dark'
+  const { theme, isLoggedIn, authReady } = React.useContext(AppContext)
+  const navigate = useNavigate()
+  const isDark = theme === 'dark'
 
-  const [mode, setMode]           = React.useState('detect')
-  const [file, setFile]           = React.useState(null)
+  const [mode, setMode] = React.useState('detect')
+  const [file, setFile] = React.useState(null)
   const [errorType, setErrorType] = React.useState(null)
   const [isDragOver, setIsDragOver] = React.useState(false)
-  const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [practiceSentence, setPracticeSentence] = React.useState('')
   const [isLoadingSentence, setIsLoadingSentence] = React.useState(false)
   const fileInputRef = React.useRef(null)
@@ -196,75 +160,28 @@ export default function Upload() {
     e.preventDefault(); setIsDragOver(false)
     if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0])
   }
-  const handleDragOver  = (e) => { e.preventDefault(); setIsDragOver(true) }
-  const handleDragLeave = ()  => setIsDragOver(false)
+  const handleDragOver = (e) => { e.preventDefault(); setIsDragOver(true) }
+  const handleDragLeave = () => setIsDragOver(false)
 
   const handleChangeFile = () => {
     setFile(null); setErrorType(null)
     setTimeout(() => fileInputRef.current?.click(), 10)
   }
 
-  const mapUploadError = (error) => {
-    return normalizeUploadError(error, mode)
-  }
 
-  const getUploadErrorMessage = (type, fallbackMessage) => {
-    if (type === 'size') {
-      return 'Ukuran file terlalu besar. Maksimal 10MB.'
-    }
 
-    if (type === 'scan') {
-      return 'Kertas grid tidak terdeteksi. Ambil ulang foto dengan pencahayaan lebih baik, posisi lebih lurus, dan pastikan template resmi terlihat penuh.'
-    }
-
-    if (type === 'timeout') {
-      return 'Server AI terlalu lama merespons. Coba unggah ulang dalam beberapa saat.'
-    }
-
-    if (type === 'base64') {
-      return 'Data gambar gagal dikirim ke server AI. Coba unggah ulang file yang sama.'
-    }
-
-    if (type === 'format') {
-      return 'Format file tidak didukung. Gunakan JPG atau PNG yang jelas.'
-    }
-
-    return fallbackMessage || 'Terjadi kesalahan saat memproses file.'
-  }
-
-  const handleAnalyze = async () => {
-    if (!file || isSubmitting) return
-
-    setIsSubmitting(true)
+  const handleAnalyze = () => {
+    if (!file) return
 
     const imageUrl = URL.createObjectURL(file)
 
-    try {
-      const response = mode === 'detect'
-        ? await detectDyslexia(file)
-        : await translateImageText(file)
-
-      navigate('/result', {
-        state: {
-          mode,
-          imageUrl,
-          analysis: response?.result || null,
-          history: response?.history || null,
-        },
-      })
-    } catch (error) {
-      const uploadErrorType = mapUploadError(error)
-      navigate('/result', {
-        state: {
-          mode,
-          imageUrl,
-          errorType: uploadErrorType,
-          errorMessage: getUploadErrorMessage(uploadErrorType, error.response?.data?.message || error.message),
-        },
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
+    navigate('/analyzing', {
+      state: {
+        mode,
+        file,
+        imageUrl,
+      },
+    })
   }
 
   // ── Computed error values ──────────────────────────────────────────────────
@@ -277,38 +194,38 @@ export default function Upload() {
         ? 'Server AI terlalu lama merespons. Coba unggah ulang dalam beberapa saat.'
         : errorType === 'base64'
           ? 'Data gambar gagal dikirim ke server AI. Coba unggah ulang file yang sama.'
-    : errorCfg?.message
+          : errorCfg?.message
 
   // Per-type icon (light vs dark)
-  const errorIconSrc = errorType === 'format'  ? (isDark ? errorFormatDark  : errorFormatLight)
-                     : errorType === 'size'    ? (isDark ? fileSizeDark     : fileSizeLight)
-                     : errorType === 'network' ? (isDark ? networkErrDark   : networkErrLight)
-                     : errorType === 'server'  ? (isDark ? serverErrDark    : serverErrLight)
-                     : null
+  const errorIconSrc = errorType === 'format' ? (isDark ? errorFormatDark : errorFormatLight)
+    : errorType === 'size' ? (isDark ? fileSizeDark : fileSizeLight)
+      : errorType === 'network' ? (isDark ? networkErrDark : networkErrLight)
+        : errorType === 'server' ? (isDark ? serverErrDark : serverErrLight)
+          : null
 
   // ── Theme-aware class helpers ──────────────────────────────────────────────
-  const cardBg     = isDark ? 'bg-[#1e2939]' : 'bg-white'
-  const pageBgCls  = isDark ? 'bg-[#0f172a]' : 'bg-[#E5E7EB]'
-  const tipsCls    = isDark
+  const cardBg = isDark ? 'bg-[#1e2939]' : 'bg-white'
+  const pageBgCls = isDark ? 'bg-[#0f172a]' : 'bg-[#E5E7EB]'
+  const tipsCls = isDark
     ? 'bg-gradient-to-r from-[rgba(28,57,142,0.2)] to-[rgba(89,22,139,0.2)] border-[rgba(25,60,184,0.5)]'
     : 'bg-gradient-to-r from-[#eff6ff] to-[#faf5ff] border-[#bedbff]'
 
-  const modeInactiveCls   = isDark ? 'border-[#4a5565]' : 'border-[#d1d5dc]'
-  const modeActiveCls     = isDark ? 'bg-[rgba(28,57,142,0.2)] border-[#2b7fff]' : 'bg-[#eff6ff] border-[#2b7fff]'
+  const modeInactiveCls = isDark ? 'border-[#4a5565]' : 'border-[#d1d5dc]'
+  const modeActiveCls = isDark ? 'bg-[rgba(28,57,142,0.2)] border-[#2b7fff]' : 'bg-[#eff6ff] border-[#2b7fff]'
   const modeInactiveIconD = isDark ? 'bg-[#364153]' : 'bg-[#e5e7eb]'
 
   const dropzoneBgCls = file
     ? (isDark ? 'bg-[rgba(5,223,114,0.08)]' : 'bg-[#f0fdf4]')
     : isDragOver
       ? (isDark ? 'bg-[rgba(43,127,255,0.1)]' : 'bg-[#eff6ff]')
-      : (isDark ? 'bg-[rgba(54,65,83,0.5)]'   : 'bg-[#f9fafb]')
+      : (isDark ? 'bg-[rgba(54,65,83,0.5)]' : 'bg-[#f9fafb]')
   const dropzoneBorderCls = file
     ? 'border-[#05df72]'
     : isDragOver ? 'border-[#2b7fff]'
-    : (isDark ? 'border-[#4a5565]' : 'border-[#d1d5dc]')
+      : (isDark ? 'border-[#4a5565]' : 'border-[#d1d5dc]')
 
   const uploadCircleCls = isDark ? 'bg-[rgba(28,57,142,0.3)]' : 'bg-[#dbeafe]'
-  const pickFileBtnCls  = isDark
+  const pickFileBtnCls = isDark
     ? 'bg-[rgba(38,38,38,0.3)] border-[#4a5565] text-[#d1d5dc]'
     : 'bg-white border-[#d1d5dc] text-[#364153]'
   return (
@@ -335,17 +252,6 @@ export default function Upload() {
             Pilih mode analisis dan upload foto yang jelas
           </p>
 
-          {(practiceSentence || isLoadingSentence) && (
-            <div className={`rounded-[14px] border px-4 py-3 mb-6 ${isDark ? 'border-[#4a5565] bg-[rgba(54,65,83,0.35)]' : 'border-[#dbeafe] bg-[#eff6ff]'}`}>
-              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#2b7fff] mb-1">
-                Teks Latihan AI
-              </p>
-              <p className="text-[15px] leading-[24px] text-[var(--text-primary)]">
-                {isLoadingSentence ? 'Menyiapkan teks latihan...' : practiceSentence}
-              </p>
-            </div>
-          )}
-
           {/* ── Tips Banner ── */}
           <Link
             to="/photo-tips"
@@ -369,9 +275,9 @@ export default function Upload() {
             <div
               className="rounded-[10px] border flex items-start gap-3 mb-5 p-4 transition-all duration-200"
               style={{
-                background:   isDark ? errorCfg.darkBg     : errorCfg.lightBg,
-                borderColor:  isDark ? errorCfg.darkBorder  : errorCfg.lightBorder,
-                borderWidth:  '0.727px',
+                background: isDark ? errorCfg.darkBg : errorCfg.lightBg,
+                borderColor: isDark ? errorCfg.darkBorder : errorCfg.lightBorder,
+                borderWidth: '0.727px',
               }}
               role="alert"
             >
@@ -550,7 +456,7 @@ export default function Upload() {
             <Button
               variant="primary"
               isDark={isDark}
-              loading={isSubmitting}
+              loading={false}
               disabled={!file}
               onClick={handleAnalyze}
               className="flex-[1.2] !rounded-[10px] h-[48px]"

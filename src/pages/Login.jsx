@@ -261,8 +261,7 @@ export default function Login() {
                 theme === 'dark' ? 'text-[#d1d5dc]' : 'text-[#364153]'
               }`}>
                 <p>• Gunakan email dan password akun yang sudah terdaftar.</p>
-                <p>• Jika login gagal, cek kembali kredensial atau koneksi backend.</p>
-                <p>• Jika login gagal, cek kembali kredensial atau koneksi backend.</p>
+                <p>• Jika login gagal, cek kembali email, password, atau koneksi internet Anda.</p>
               </div>
             </div>
           </form>

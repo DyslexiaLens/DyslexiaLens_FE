@@ -94,7 +94,7 @@ function ToggleRow({ title, description, checked, onChange, children, theme }) {
 }
 
 export default function AccessibilityPage() {
-  const { theme, logout, accessibility, updateAccessibility, resetAccessibility } = React.useContext(AppContext)
+  const { theme, logout, accessibility, updateAccessibility, resetAccessibility, isLoggedIn } = React.useContext(AppContext)
   const navigate = useNavigate()
   const isDark = theme === 'dark'
   const [savedState, setSavedState] = React.useState(true)
@@ -130,7 +130,7 @@ export default function AccessibilityPage() {
   return (
     <div className={`px-4 py-8 transition-colors duration-300 sm:px-6 lg:px-0 lg:py-12 ${pageClass}`}>
       <div className="mx-auto flex max-w-[896px] flex-col gap-5 sm:gap-6">
-        <Link to="/profile" className={`inline-flex items-center gap-2 text-sm ${isDark ? 'text-[#cbd5e1]' : 'text-[#364153]'}`}>
+        <Link to={isLoggedIn ? "/profile" : "/"} className={`inline-flex items-center gap-2 text-sm ${isDark ? 'text-[#cbd5e1]' : 'text-[#364153]'}`}>
           <BackIcon />
           <span>Kembali</span>
         </Link>
@@ -144,10 +144,12 @@ export default function AccessibilityPage() {
           <div className={`border-b ${isDark ? 'border-[#364153]' : 'border-[#e5e7eb]'} ${isDark ? 'bg-[#1f2937]' : 'bg-[#f9fafb]'}`}>
             <div className="px-6 py-6 sm:px-8">
               <div className="space-y-1">
-                <SidebarLink to="/profile" isDark={isDark}>
-                  <SidebarIcon type="profile" />
-                  <span>Profil</span>
-                </SidebarLink>
+                {isLoggedIn && (
+                  <SidebarLink to="/profile" isDark={isDark}>
+                    <SidebarIcon type="profile" />
+                    <span>Profil</span>
+                  </SidebarLink>
+                )}
                 <SidebarLink to="/profile/accessibility" active isDark={isDark}>
                   <SidebarIcon type="accessibility" />
                   <span>Aksesibilitas</span>
@@ -261,21 +263,23 @@ export default function AccessibilityPage() {
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => {
-                logout()
-                navigate('/')
-              }}
-              className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#FF6467] transition duration-200 hover:opacity-80"
-            >
-              <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                <path d="M6 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H6" stroke="currentColor" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M10.6667 11.3333L14 8L10.6667 4.66667" stroke="currentColor" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M14 8H6" stroke="currentColor" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span>Keluar</span>
-            </button>
+            {isLoggedIn && (
+              <button
+                type="button"
+                onClick={() => {
+                  logout()
+                  navigate('/')
+                }}
+                className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#FF6467] transition duration-200 hover:opacity-80"
+              >
+                <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                  <path d="M6 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H6" stroke="currentColor" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M10.6667 11.3333L14 8L10.6667 4.66667" stroke="currentColor" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M14 8H6" stroke="currentColor" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span>Keluar</span>
+              </button>
+            )}
 
             <div
               className={`mt-6 rounded-[10px] border px-4 py-3 text-sm leading-6 ${isDark ? 'border-[#894b00] bg-[rgba(115,62,10,0.2)] text-[#d1d5dc]' : 'border-[#fcd34d] bg-[#fefce8] text-[#364153]'}`}

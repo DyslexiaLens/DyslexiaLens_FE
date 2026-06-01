@@ -391,7 +391,7 @@ export default function Register() {
               <p className={`text-[14px] font-semibold leading-[20px] ${theme === 'dark' ? 'text-white' : 'text-[#101828]'}`}>Informasi Pendaftaran:</p>
               <div className={`mt-2 space-y-1 text-[12px] leading-[16px] ${theme === 'dark' ? 'text-[#d1d5dc]' : 'text-[#364153]'}`}>
                 <p>• Gunakan email aktif dan password yang kuat.</p>
-                <p>• Jika email sudah terdaftar, backend akan menolak pendaftaran.</p>
+                <p>• Jika email sudah terdaftar, sistem akan menolak pendaftaran.</p>
                 <p>• Setelah berhasil, Anda bisa langsung login dengan akun baru.</p>
               </div>
             </div>

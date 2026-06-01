@@ -53,12 +53,28 @@ export default function Result() {
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' })
 
   const analysisDate = useMemo(() => formatDate(historyItem?.created_at), [historyItem?.created_at])
-  const confidence = Math.round(((analysis?.confidence ?? historyItem?.confidence ?? 0) * 100))
+
+  const rawResponse = useMemo(() => {
+    if (!historyItem?.raw_response) return null
+    try {
+      return typeof historyItem.raw_response === 'string'
+        ? JSON.parse(historyItem.raw_response)
+        : historyItem.raw_response
+    } catch (e) {
+      console.error('Failed to parse raw_response:', e)
+      return null
+    }
+  }, [historyItem?.raw_response])
+
+  const severityScoreVal = analysis?.severityScore ?? rawResponse?.severityScore ?? 0
+  const severityScore = Math.round(severityScoreVal > 1 ? severityScoreVal : severityScoreVal * 100)
+  const severityLevel = analysis?.severityLevel ?? rawResponse?.severityLevel ?? null
+
   const predictedText = analysis?.predictedText || historyItem?.predicted_text || ''
   const sourceText = analysis?.sourceText || historyItem?.source_text || predictedText
   const translatedText = analysis?.translatedText || historyItem?.translated_text || ''
   const resultLabel = analysis?.resultLabel || historyItem?.result_label || (isDetection ? 'Selesai' : 'Selesai')
-  const notes = analysis?.notes || 'Hasil berhasil diterima dari backend dan tersimpan ke riwayat.'
+  const notes = analysis?.notes || 'Hasil analisis berhasil disimpan ke riwayat.'
 
   const showToast = (message, type = 'success') => {
     setToast({ show: true, message, type })
@@ -68,7 +84,7 @@ export default function Result() {
   }
 
   const handleExport = () => {
-    showToast('Ekspor PDF akan dihubungkan ke backend pada tahap berikutnya.', 'success')
+    showToast('Fitur Ekspor PDF akan segera hadir.', 'success')
   }
 
   const handleOpenHistory = () => {
@@ -99,7 +115,7 @@ export default function Result() {
     const desc = errorType === 'network'
       ? 'Periksa koneksi Anda lalu coba upload ulang.'
       : errorType === 'server'
-        ? 'Backend tidak merespons dengan benar. Coba lagi beberapa saat.'
+        ? 'Sistem sedang sibuk. Silakan coba kembali beberapa saat lagi.'
         : errorType === 'scan'
           ? 'Kertas grid tidak terdeteksi. Coba foto ulang dengan cahaya yang lebih terang, posisi lebih sejajar, dan pastikan template resmi terlihat penuh.'
           : errorType === 'timeout'
@@ -130,7 +146,7 @@ export default function Result() {
       <div className={`min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-6 ${pageBgCls}`}>
         <h1 className="mb-3 text-2xl font-bold">Belum ada hasil analisis</h1>
         <p className={`mb-8 max-w-md text-center ${subTextCls}`}>
-          Upload gambar terlebih dahulu agar backend bisa memproses dan menyimpan hasilnya ke riwayat.
+          Silakan unggah gambar terlebih dahulu agar sistem dapat memproses dan menyimpan hasil analisis.
         </p>
         <Button variant="primary" size="lg" isDark={isDark} onClick={handleBackToUpload}>
           Ke Upload
@@ -192,10 +208,15 @@ export default function Result() {
           <>
             <section className={`${cardCls} flex flex-col gap-6 md:flex-row md:items-center`}>
               <div className="relative flex h-32 w-32 shrink-0 items-center justify-center rounded-full border-8 border-blue-500">
-                <span className="bg-inherit px-2 text-2xl font-bold text-blue-500">{confidence}%</span>
+                <span className="bg-inherit px-2 text-2xl font-bold text-blue-500">{severityScore}%</span>
               </div>
               <div>
                 <h2 className="mb-2 text-xl font-bold">{resultLabel}</h2>
+                {severityLevel && (
+                  <p className={`text-sm font-semibold mb-2 ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>
+                    Tingkat Keparahan: {severityLevel}
+                  </p>
+                )}
                 <p className={subTextCls}>{notes}</p>
               </div>
             </section>
@@ -203,7 +224,7 @@ export default function Result() {
             <section className={cardCls}>
               <h2 className="mb-4 text-lg font-bold">Teks OCR</h2>
               <div className="flex flex-wrap gap-2">
-                {(predictedText || 'Belum ada teks OCR dari backend').split(/\s+/).filter(Boolean).slice(0, 12).map((word) => (
+                {(predictedText || 'Belum ada teks terdeteksi').split(/\s+/).filter(Boolean).slice(0, 12).map((word) => (
                   <span key={word} className={`rounded-lg border px-3 py-1.5 font-mono text-sm ${isDark ? 'border-gray-700 bg-gray-800 text-blue-300' : 'border-gray-200 bg-gray-100 text-blue-700'}`}>
                     {word}
                   </span>
@@ -224,13 +245,13 @@ export default function Result() {
                 <div>
                   <p className={`mb-2 text-sm font-semibold ${subTextCls}`}>Tulisan Asli</p>
                   <div className={`rounded-xl border p-4 font-mono ${isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
-                    {sourceText || 'Belum ada teks asli dari backend'}
+                    {sourceText || 'Belum ada teks asli'}
                   </div>
                 </div>
                 <div>
                   <p className={`mb-2 text-sm font-semibold ${subTextCls}`}>Teks Hasil</p>
                   <div className={`rounded-xl border p-4 font-mono ${isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
-                    {translatedText || 'Belum ada hasil terjemahan dari backend'}
+                    {translatedText || 'Belum ada hasil terjemahan'}
                   </div>
                 </div>
               </div>

@@ -367,7 +367,7 @@ export default function ForgotPassword() {
                 <p className="text-[12px] font-semibold leading-[16px]">Alur reset password:</p>
                 <div className={`mt-2 space-y-1 text-[12px] leading-[16px] ${theme === 'dark' ? 'text-[#99a1af]' : 'text-[#4a5565]'}`}>
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span>• Backend akan mengirim OTP ke email yang terdaftar.</span>
+                    <span>• Sistem akan mengirimkan kode OTP ke email yang terdaftar.</span>
                   </div>
 
                   <div className="flex items-center gap-1.5 flex-wrap">
@@ -375,7 +375,7 @@ export default function ForgotPassword() {
                   </div>
 
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span>• Password baru disimpan melalui backend setelah OTP valid.</span>
+                    <span>• Password baru akan disimpan dengan aman setelah OTP terverifikasi.</span>
                   </div>
                 </div>
               </div>
@@ -572,14 +572,14 @@ export default function ForgotPassword() {
                 <p className="text-[12px] font-semibold leading-[16px]">Alur reset password:</p>
                 <div className={`mt-2 space-y-1 text-[12px] leading-[16px] ${theme === 'dark' ? 'text-[#99a1af]' : 'text-[#4a5565]'}`}>
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span>• OTP dikirim oleh backend setelah email dikirim.</span>
+                    <span>• Kode OTP dikirimkan ke kotak masuk email Anda secara otomatis.</span>
                   </div>
 
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <span>• OTP yang benar akan membuka form password baru.</span>
                   </div>
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span>• Password baru disimpan lewat endpoint reset password backend.</span>
+                    <span>• Password baru akan diperbarui setelah verifikasi kode selesai.</span>
                   </div>
                 </div>
               </div>
