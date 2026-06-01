@@ -71,7 +71,7 @@ export default function Home() {
               {isLoggedIn ? (
                 <>
                   <button
-                    onClick={() => navigate('/upload')}
+                    onClick={() => navigate('/writing-tips')}
                     disabled={primaryLoading}
                     className="inline-flex h-14 min-w-[266px] whitespace-nowrap items-center justify-center rounded-[14px] bg-gradient-to-r from-[#155dfc] to-[#9810fa] px-8 text-[18px] font-medium leading-[28px] text-white drop-shadow-[0px_10px_7.5px_rgba(0,0,0,0.1),0px_4px_3px_rgba(0,0,0,0.1)] transition duration-200 hover:brightness-105 active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#155dfc] focus-visible:ring-offset-2"
                   >
@@ -353,7 +353,7 @@ export default function Home() {
             {isLoggedIn ? (
               <>
                 <button
-                  onClick={() => navigate('/upload')}
+                  onClick={() => navigate('/writing-tips')}
                   className="inline-flex h-14 min-w-[266px] items-center justify-center gap-3 rounded-[14px] bg-white text-[#155dfc] text-[18px] font-bold drop-shadow-[0px_25px_25px_rgba(0,0,0,0.25)] transition duration-200 hover:bg-white/95 active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#155dfc]"
                 >
                   <span>Upload Tulisan Sekarang</span>

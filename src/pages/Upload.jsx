@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import Button from '../components/ui/Button'
 
@@ -94,9 +94,11 @@ function validateFile(file) {
 export default function Upload() {
   const { theme, isLoggedIn, authReady } = React.useContext(AppContext)
   const navigate = useNavigate()
+  const location = useLocation()
   const isDark = theme === 'dark'
 
-  const [mode, setMode] = React.useState('detect')
+  const initialMode = location.state?.mode || 'detect'
+  const [mode, setMode] = React.useState(initialMode)
   const [file, setFile] = React.useState(null)
   const [errorType, setErrorType] = React.useState(null)
   const [isDragOver, setIsDragOver] = React.useState(false)
@@ -234,7 +236,7 @@ export default function Upload() {
 
         {/* ── Back link ── */}
         <Link
-          to="/"
+          to="/writing-tips"
           className="mb-6 inline-flex items-center gap-1.5 text-[var(--text-secondary)] text-[16px] hover:text-[var(--text-primary)] transition-colors"
         >
           <BackArrow isDark={isDark} />
@@ -254,7 +256,7 @@ export default function Upload() {
 
           {/* ── Tips Banner ── */}
           <Link
-            to="/photo-tips"
+            to="/writing-tips"
             className={`btn-lift rounded-[14px] border p-4 flex items-center gap-3 mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2b7fff] focus-visible:ring-offset-2 ${tipsCls}`}
           >
             <div
@@ -264,7 +266,7 @@ export default function Upload() {
               <img src={tipsIcon} alt="" className="w-5 h-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-[var(--text-primary)] text-[16px] leading-[24px]">Tips Foto yang Baik</p>
+              <p className="font-semibold text-[var(--text-primary)] text-[16px] leading-[24px]">Petunjuk Penulisan</p>
               <p className="text-[var(--text-secondary)] text-[14px] leading-[20px]">Lihat panduan untuk hasil analisis terbaik</p>
             </div>
             <ChevronRight isDark={isDark} />

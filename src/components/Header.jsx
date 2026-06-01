@@ -111,7 +111,7 @@ export default function Header() {
                 </Link>
 
                 <Link
-                  to="/upload"
+                  to="/writing-tips"
                   className="inline-flex h-9 items-center justify-center rounded-full bg-gradient-to-r from-[#155dfc] to-[#9810fa] px-4 text-sm font-semibold text-white drop-shadow-[0px_4px_3px_rgba(0,0,0,0.1),0px_2px_2px_rgba(0,0,0,0.1)] transition duration-200 hover:brightness-105 active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#155dfc] focus-visible:ring-offset-2"
                 >
                   <span>Mulai Analisis</span>
@@ -326,7 +326,7 @@ export default function Header() {
                       {/* Premium Mulai Analisis Button from Figma */}
                       <button
                         type="button"
-                        onClick={() => handleLinkClick('/upload')}
+                        onClick={() => handleLinkClick('/writing-tips')}
                         className="flex items-center justify-between w-full p-3 rounded-[14px] text-white shadow-md active:scale-[0.98] transition"
                         style={{ backgroundImage: 'linear-gradient(90deg, #155dfc 0%, #9810fa 100%)' }}
                       >

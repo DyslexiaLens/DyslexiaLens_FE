@@ -291,7 +291,7 @@ export default function History() {
               </Button>
             )}
             <Link
-              to="/upload"
+              to="/writing-tips"
               className={[
                 'inline-flex h-11 px-5 items-center justify-center gap-2 rounded-xl font-semibold text-sm',
                 'btn-lift bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20',
@@ -512,7 +512,7 @@ export default function History() {
               action={
                 !searchQuery && (
                   <Link
-                    to="/upload"
+                    to="/writing-tips"
                     className={[
                       'inline-flex h-12 px-8 items-center justify-center gap-2 rounded-xl font-bold text-sm',
                       'bg-blue-600 hover:bg-blue-700 active:translate-y-px text-white shadow-lg shadow-blue-500/30',

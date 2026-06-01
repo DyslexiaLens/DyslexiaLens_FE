@@ -92,7 +92,7 @@ export default function Result() {
   }
 
   const handleBackToUpload = () => {
-    navigate('/upload')
+    navigate('/writing-tips')
   }
 
   const pageBgCls = isDark ? 'bg-[#0f172a] text-white' : 'bg-[#E5E7EB] text-gray-900'
@@ -122,13 +122,13 @@ export default function Result() {
             ? 'Model AI memerlukan waktu terlalu lama. Silakan coba lagi beberapa saat.'
             : errorType === 'base64'
               ? 'Data gambar gagal diproses saat pengiriman ke AI server.'
-        : 'Terjadi kesalahan saat memproses gambar.'
+              : 'Terjadi kesalahan saat memproses gambar.'
 
     return (
       <div className={`min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-6 ${pageBgCls}`}>
         <img src={icon} alt="" className="mb-6 h-40 w-40 object-contain" />
         <h1 className="mb-3 text-center text-2xl font-bold">{title}</h1>
-          <p className={`mb-8 max-w-sm text-center ${subTextCls}`}>{errorMessage || desc}</p>
+        <p className={`mb-8 max-w-sm text-center ${subTextCls}`}>{errorMessage || desc}</p>
         <div className="flex w-full max-w-xs flex-col gap-3">
           <Button variant="primary" size="lg" isDark={isDark} onClick={handleBackToUpload} className="w-full">
             Upload Ulang
@@ -162,7 +162,7 @@ export default function Result() {
           <div className={`flex items-center gap-3 rounded-xl border px-6 py-4 shadow-lg ${toast.type === 'success'
             ? (isDark ? 'border-green-700 bg-green-900/90 text-green-100' : 'border-green-200 bg-green-50 text-green-800')
             : (isDark ? 'border-red-700 bg-red-900/90 text-red-100' : 'border-red-200 bg-red-50 text-red-800')
-          }`}>
+            }`}>
             <span className={`flex h-6 w-6 items-center justify-center rounded-full text-white ${toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}>
               {toast.type === 'success' ? (
                 <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10L9 15L16 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -242,12 +242,6 @@ export default function Result() {
             <section className={cardCls}>
               <h2 className="mb-4 text-lg font-bold">Ringkasan Terjemahan</h2>
               <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <p className={`mb-2 text-sm font-semibold ${subTextCls}`}>Tulisan Asli</p>
-                  <div className={`rounded-xl border p-4 font-mono ${isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
-                    {sourceText || 'Belum ada teks asli'}
-                  </div>
-                </div>
                 <div>
                   <p className={`mb-2 text-sm font-semibold ${subTextCls}`}>Teks Hasil</p>
                   <div className={`rounded-xl border p-4 font-mono ${isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>

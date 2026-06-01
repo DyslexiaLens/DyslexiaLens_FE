@@ -41,7 +41,7 @@ export default function App() {
             <Route path="/register" element={wrap(<Register />)} />
             <Route path="/forgot" element={wrap(<ForgotPassword />)} />
             <Route path="/upload" element={wrap(<Upload />)} />
-            <Route path="/photo-tips" element={wrap(<PhotoTips />)} />
+            <Route path="/writing-tips" element={wrap(<PhotoTips />)} />
             <Route path="/analyzing" element={wrap(<Analyzing />)} />
             <Route path="/result" element={wrap(<Result />)} />
             <Route path="/history" element={wrap(<History />)} />
