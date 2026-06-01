@@ -51,7 +51,11 @@ export const getMe = async () => {
   return res.data;
 };
 
-export const changePassword = async ({ currentPassword, newPassword, otpCode }) => {
+export const changePassword = async ({
+  currentPassword,
+  newPassword,
+  otpCode,
+}) => {
   const res = await api.patch("/api/v1/auth/change-password", {
     currentPassword,
     newPassword,

@@ -25,8 +25,9 @@ export default function Login() {
     if (loading) return
     const errs = {}
     if (!email) errs.email = 'Email tidak boleh kosong'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) errs.email = 'Format email tidak valid'
     if (!password) errs.password = 'Password tidak boleh kosong'
-    else if (password.length < 6) errs.password = 'Password minimal 6 karakter'
+    else if (password.length < 8) errs.password = 'Password minimal 8 karakter'
     setErrors(errs)
     if (Object.keys(errs).length === 0) {
       try {
@@ -47,12 +48,21 @@ export default function Login() {
       } catch (error) {
         const status = error.response?.status
         const message = error.response?.data?.message
+        const validationMessage = Array.isArray(error.response?.data?.errors)
+          ? error.response.data.errors[0]?.msg
+          : null
 
         if (!error.response) {
           setAuthError({
             type: 'connection',
             title: 'Masalah Koneksi',
             message: 'Koneksi bermasalah. Periksa internet lalu coba lagi.',
+          })
+        } else if (status === 400) {
+          setAuthError({
+            type: 'validation',
+            title: 'Input Tidak Valid',
+            message: validationMessage || message || 'Periksa kembali email dan password Anda.',
           })
         } else if (status === 401) {
           setAuthError({
@@ -125,6 +135,17 @@ export default function Login() {
                   <div>
                     <div className="font-medium" style={{ color: theme === 'dark' ? '#FF6467' : '#9F0712' }}>{authError.title || 'Login gagal'}</div>
                     <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FFA2A2' : '#C10007' }}>{authError.message || 'Email tidak terdaftar. Silakan daftar terlebih dahulu atau gunakan email lain.'}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {authError && authError.type === 'validation' && (
+              <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[#82181A33] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
+                <div className="flex items-start gap-3">
+                  <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
+                  <div>
+                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FFA2A2' : '#9F0712' }}>{authError.title || 'Input tidak valid'}</div>
+                    <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FF6467' : '#C10007' }}>{authError.message || 'Periksa kembali email dan password Anda.'}</div>
                   </div>
                 </div>
               </div>

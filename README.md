@@ -168,7 +168,8 @@ Aplikasi ini menggunakan Axios Interceptor untuk otomatis menyematkan `Bearer To
 
 *   **Layanan Kecerdasan Buatan (`aiService.js`)**:
     *   `POST /api/v1/ai/detections` - Mengirim berkas gambar untuk mendeteksi indikasi disleksia (`multipart/form-data`).
-    *   `POST /api/v1/ai/translations` - Mengirim berkas gambar untuk ekstraksi dan konversi teks ramah pembaca disleksia.
+   *   `POST /api/v1/ai/translations` - Mengirim berkas gambar untuk ekstraksi teks tulisan tangan (`multipart/form-data`).
+   *   `POST /api/v1/ai/generate-text` - Meminta backend membuat teks latihan baru untuk pengguna yang sedang belajar menulis.
 
 *   **Riwayat Pengguna (`historyService.js`)**:
     *   `GET /api/v1/history` - Mendapatkan daftar riwayat analisis disleksia sebelumnya.

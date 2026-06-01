@@ -83,9 +83,10 @@ export default function Register() {
       nextErrors.name = 'Nama hanya boleh huruf, spasi, dan tanda hubung'
     }
     if (!trimmedEmail) nextErrors.email = 'Email tidak boleh kosong'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) nextErrors.email = 'Format email tidak valid'
 
     if (!password) nextErrors.password = 'Password tidak boleh kosong'
-    else if (password.length < 6) nextErrors.password = 'Password minimal 6 karakter'
+    else if (password.length < 8) nextErrors.password = 'Password minimal 8 karakter'
     else if (!(/[a-z]/i.test(password) && /\d/.test(password))) {
       nextErrors.password = 'Password harus mengandung huruf dan angka'
     }
@@ -120,6 +121,9 @@ export default function Register() {
       } catch (error) { 
         const status = error.response?.status 
         const message = error.response?.data?.message 
+        const validationMessage = Array.isArray(error.response?.data?.errors)
+          ? error.response.data.errors[0]?.msg
+          : null
 
         if (status === 409) { 
           setAuthError({ 
@@ -127,6 +131,12 @@ export default function Register() {
             title: 'Email Sudah Terdaftar', 
             message: 'Email sudah terdaftar. Silakan gunakan email lain atau login ke akun Anda.', 
           }) 
+        } else if (status === 400) {
+          setAuthError({
+            type: 'validation',
+            title: 'Input Tidak Valid',
+            message: validationMessage || message || 'Periksa kembali data registrasi Anda.',
+          })
         } else if (!error.response) { 
           setAuthError({ 
             type: 'connection', 

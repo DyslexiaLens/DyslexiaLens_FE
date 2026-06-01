@@ -20,7 +20,7 @@ import networkErrLight     from '../assets/NetworkErrorLight.svg'
 import networkErrDark      from '../assets/NetworkErrorDark.svg'
 import serverErrLight      from '../assets/ServerErrorLight.svg'
 import serverErrDark       from '../assets/ServerErrorDark.svg'
-import { detectDyslexia, translateImageText } from '../services/aiService'
+import { detectDyslexia, generatePracticeText, translateImageText } from '../services/aiService'
 
 // ── Back arrow SVG (inline — no separate asset needed) ───────────────────────
 function BackArrow({ isDark }) {
@@ -89,8 +89,45 @@ function validateFile(file) {
   return null
 }
 
+function normalizeUploadError(error, mode) {
+  if (!error.response) {
+    return 'network'
+  }
+
+  const status = error.response.status
+  const message = String(error.response.data?.message || '').toLowerCase()
+  const detail = String(error.response.data?.errors?.[0]?.msg || '').toLowerCase()
+  const combined = `${message} ${detail}`
+
+  if (status === 413 || combined.includes('size')) {
+    return 'size'
+  }
+
+  if (status === 400 && (combined.includes('image') || combined.includes('jpg') || combined.includes('png') || combined.includes('format'))) {
+    return 'format'
+  }
+
+  if (mode === 'detect' && (combined.includes('grid') || combined.includes('template') || combined.includes('blur') || combined.includes('buram') || combined.includes('dark') || combined.includes('gelap') || combined.includes('cropped') || combined.includes('terpotong') || combined.includes('not detected'))) {
+    return 'scan'
+  }
+
+  if (combined.includes('timeout')) {
+    return 'timeout'
+  }
+
+  if (combined.includes('base64') || combined.includes('corrupt') || combined.includes('handshake') || combined.includes('decode image') || combined.includes('could not decode image') || combined.includes('invalid image')) {
+    return 'base64'
+  }
+
+  if (combined.includes('unavailable') || combined.includes('503') || combined.includes('bad gateway')) {
+    return 'server'
+  }
+
+  return 'server'
+}
+
 export default function Upload() {
-  const { theme }  = React.useContext(AppContext)
+  const { theme, isLoggedIn, authReady }  = React.useContext(AppContext)
   const navigate   = useNavigate()
   const isDark     = theme === 'dark'
 
@@ -99,7 +136,43 @@ export default function Upload() {
   const [errorType, setErrorType] = React.useState(null)
   const [isDragOver, setIsDragOver] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [practiceSentence, setPracticeSentence] = React.useState('')
+  const [isLoadingSentence, setIsLoadingSentence] = React.useState(false)
   const fileInputRef = React.useRef(null)
+
+  React.useEffect(() => {
+    if (!authReady || !isLoggedIn) {
+      return undefined
+    }
+
+    let cancelled = false
+
+    const loadPracticeSentence = async () => {
+      setIsLoadingSentence(true)
+
+      try {
+        const response = await generatePracticeText()
+
+        if (!cancelled) {
+          setPracticeSentence(response?.sentence || '')
+        }
+      } catch {
+        if (!cancelled) {
+          setPracticeSentence('')
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoadingSentence(false)
+        }
+      }
+    }
+
+    loadPracticeSentence()
+
+    return () => {
+      cancelled = true
+    }
+  }, [authReady, isLoggedIn])
 
   // ── File handling ──────────────────────────────────────────────────────────
   const handleFile = React.useCallback((f) => {
@@ -132,15 +205,31 @@ export default function Upload() {
   }
 
   const mapUploadError = (error) => {
-    if (!error.response) {
-      return 'network'
+    return normalizeUploadError(error, mode)
+  }
+
+  const getUploadErrorMessage = (type, fallbackMessage) => {
+    if (type === 'size') {
+      return 'Ukuran file terlalu besar. Maksimal 10MB.'
     }
 
-    if (error.response.status === 413) {
-      return 'size'
+    if (type === 'scan') {
+      return 'Kertas grid tidak terdeteksi. Ambil ulang foto dengan pencahayaan lebih baik, posisi lebih lurus, dan pastikan template resmi terlihat penuh.'
     }
 
-    return 'server'
+    if (type === 'timeout') {
+      return 'Server AI terlalu lama merespons. Coba unggah ulang dalam beberapa saat.'
+    }
+
+    if (type === 'base64') {
+      return 'Data gambar gagal dikirim ke server AI. Coba unggah ulang file yang sama.'
+    }
+
+    if (type === 'format') {
+      return 'Format file tidak didukung. Gunakan JPG atau PNG yang jelas.'
+    }
+
+    return fallbackMessage || 'Terjadi kesalahan saat memproses file.'
   }
 
   const handleAnalyze = async () => {
@@ -159,16 +248,18 @@ export default function Upload() {
         state: {
           mode,
           imageUrl,
-          analysis: response.data?.result || null,
-          history: response.data?.history || null,
+          analysis: response?.result || null,
+          history: response?.history || null,
         },
       })
     } catch (error) {
+      const uploadErrorType = mapUploadError(error)
       navigate('/result', {
         state: {
           mode,
           imageUrl,
-          errorType: mapUploadError(error),
+          errorType: uploadErrorType,
+          errorMessage: getUploadErrorMessage(uploadErrorType, error.response?.data?.message || error.message),
         },
       })
     } finally {
@@ -180,6 +271,12 @@ export default function Upload() {
   const errorCfg = errorType ? ERROR_CONFIG[errorType] : null
   const errorMsg = errorType === 'size'
     ? 'Ukuran file terlalu besar. Maksimal 10MB.'
+    : errorType === 'scan'
+      ? 'Kertas grid tidak terdeteksi. Ambil ulang foto dengan pencahayaan lebih baik, posisi lebih lurus, dan pastikan template resmi terlihat penuh.'
+      : errorType === 'timeout'
+        ? 'Server AI terlalu lama merespons. Coba unggah ulang dalam beberapa saat.'
+        : errorType === 'base64'
+          ? 'Data gambar gagal dikirim ke server AI. Coba unggah ulang file yang sama.'
     : errorCfg?.message
 
   // Per-type icon (light vs dark)
@@ -237,6 +334,17 @@ export default function Upload() {
           <p className="text-center text-[var(--text-secondary)] text-[16px] mb-6">
             Pilih mode analisis dan upload foto yang jelas
           </p>
+
+          {(practiceSentence || isLoadingSentence) && (
+            <div className={`rounded-[14px] border px-4 py-3 mb-6 ${isDark ? 'border-[#4a5565] bg-[rgba(54,65,83,0.35)]' : 'border-[#dbeafe] bg-[#eff6ff]'}`}>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#2b7fff] mb-1">
+                Teks Latihan AI
+              </p>
+              <p className="text-[15px] leading-[24px] text-[var(--text-primary)]">
+                {isLoadingSentence ? 'Menyiapkan teks latihan...' : practiceSentence}
+              </p>
+            </div>
+          )}
 
           {/* ── Tips Banner ── */}
           <Link

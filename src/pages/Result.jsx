@@ -45,6 +45,7 @@ export default function Result() {
   const analysis = location.state?.analysis || null
   const historyItem = location.state?.history || null
   const errorType = location.state?.errorType || null
+  const errorMessage = location.state?.errorMessage || ''
   const imageUrl = location.state?.imageUrl || historyItem?.image_url || ''
   const resolvedImageUrl = resolveImageUrl(imageUrl)
   const isDetection = mode === 'detect'
@@ -99,13 +100,19 @@ export default function Result() {
       ? 'Periksa koneksi Anda lalu coba upload ulang.'
       : errorType === 'server'
         ? 'Backend tidak merespons dengan benar. Coba lagi beberapa saat.'
+        : errorType === 'scan'
+          ? 'Kertas grid tidak terdeteksi. Coba foto ulang dengan cahaya yang lebih terang, posisi lebih sejajar, dan pastikan template resmi terlihat penuh.'
+          : errorType === 'timeout'
+            ? 'Model AI memerlukan waktu terlalu lama. Silakan coba lagi beberapa saat.'
+            : errorType === 'base64'
+              ? 'Data gambar gagal diproses saat pengiriman ke AI server.'
         : 'Terjadi kesalahan saat memproses gambar.'
 
     return (
       <div className={`min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-6 ${pageBgCls}`}>
         <img src={icon} alt="" className="mb-6 h-40 w-40 object-contain" />
         <h1 className="mb-3 text-center text-2xl font-bold">{title}</h1>
-        <p className={`mb-8 max-w-sm text-center ${subTextCls}`}>{desc}</p>
+          <p className={`mb-8 max-w-sm text-center ${subTextCls}`}>{errorMessage || desc}</p>
         <div className="flex w-full max-w-xs flex-col gap-3">
           <Button variant="primary" size="lg" isDark={isDark} onClick={handleBackToUpload} className="w-full">
             Upload Ulang
