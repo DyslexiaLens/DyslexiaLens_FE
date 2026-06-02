@@ -1,0 +1,17 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5173",
+  "executionArgs": {
+    "projectName": "front-end",
+    "projectPath": "D:\\Homework\\Dicoding\\DBS Coding Camp\\Capstone\\front-end",
+    "testIds": [],
+    "additionalInstruction": "The app is a React Vite SPA for dyslexia detection. Login credentials: the test should register and use a new user. The SPA may return 404 for direct URL requests but works fine in browser navigation.",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-ghwoWzy3IlhNU3wqzdd_Wl1L_i51PltFSLVDZaB83may0K7zLwm375P1hPkKcwdH2i1SlPv4Mf51U6TT4GvcGHU8HnhijIaEC87Ra19jDBnvTwmqu4tdoP8m_RbfJoXN2L0"
+    }
+  },
+  "serverPort": 59639
+}

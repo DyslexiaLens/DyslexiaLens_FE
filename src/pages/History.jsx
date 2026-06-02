@@ -13,6 +13,15 @@ import { deleteHistory as deleteHistoryRequest, getHistories } from '../services
 import historyLightIcon from '../assets/HistoryLight.svg'
 import historyDarkIcon from '../assets/HistoryDark.svg'
 
+function resolveImageUrl(imageUrl) {
+  if (!imageUrl) return ''
+  if (imageUrl.startsWith('http') || imageUrl.startsWith('blob:') || imageUrl.startsWith('data:')) {
+    return imageUrl
+  }
+  const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '')
+  return `${baseUrl}/${imageUrl.replace(/^\//, '').replace(/\\/g, '/')}`
+}
+
 function formatHistoryDate(value) {
   const parsed = new Date(value)
   if (Number.isNaN(parsed.getTime())) {
@@ -35,6 +44,18 @@ function normalizeHistoryItem(item) {
   const isDetection = Boolean(item.predicted_text)
   const fileName = item.image_url ? item.image_url.split('/').pop() : 'upload-image'
 
+  let severityScore = null
+  if (item.raw_response) {
+    try {
+      const parsed = typeof item.raw_response === 'string' ? JSON.parse(item.raw_response) : item.raw_response
+      severityScore = parsed.severityScore
+    } catch {
+      // ignore parse errors
+    }
+  }
+
+  const fallbackUrl = resolveImageUrl(`uploads/${fileName}`)
+
   return {
     id: item.id,
     date: formatHistoryDate(item.created_at),
@@ -42,7 +63,10 @@ function normalizeHistoryItem(item) {
     mode: isDetection ? 'detect' : 'translate',
     fileName,
     imageUrl: item.image_url,
-    score: isDetection ? `${Math.round((item.confidence || 0) * 100)}%` : null,
+    fallbackUrl,
+    score: isDetection
+      ? `${Math.round((severityScore ?? item.confidence ?? 0) * 100)}%`
+      : null,
     indication: isDetection ? (item.result_label || 'Selesai') : null,
     findingsCount: isDetection ? 1 : null,
     translatedText: item.translated_text || null,
@@ -370,8 +394,13 @@ export default function History() {
                     <div className="flex items-center gap-4 w-full sm:w-auto">
                       <div className="w-16 h-16 shrink-0 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex items-center justify-center">
                         <img
-                          src={item.imageUrl}
+                          src={resolveImageUrl(item.imageUrl)}
                           alt={`Thumbnail untuk ${item.fileName}`}
+                          onError={(e) => {
+                            if (e.target.src !== item.fallbackUrl) {
+                              e.target.src = item.fallbackUrl
+                            }
+                          }}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>

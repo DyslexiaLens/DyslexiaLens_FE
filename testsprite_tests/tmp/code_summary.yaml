@@ -1,0 +1,205 @@
+version: "2"
+type: frontend
+tech_stack:
+  - React 18.2.0
+  - Vite 5.0.0
+  - Tailwind CSS 3.4.7
+  - react-router-dom 6.14.1
+  - axios
+  - framer-motion 11.18.2
+  - lucide-react
+features:
+  - name: Landing Page
+    description: Home page with hero, problem/solution sections, features, testimonials, and CTAs
+    files:
+      - src/pages/Home.jsx
+      - src/components/landing/SectionBadge.jsx
+      - src/components/landing/SectionHeading.jsx
+      - src/components/landing/FeatureCard.jsx
+      - src/components/landing/TestimonialCard.jsx
+      - src/components/landing/ActionButton.jsx
+    endpoints: []
+    depends_on: []
+  - name: Authentication
+    description: Login, registration, and forgot password flows
+    files:
+      - src/pages/Login.jsx
+      - src/pages/Register.jsx
+      - src/pages/ForgotPassword.jsx
+      - src/services/authService.js
+      - src/lib/api.js
+    endpoints:
+      - method: POST
+        path: /api/v1/auth/register
+        description: Register new user
+        auth_required: false
+        response_schema:
+          "201": User object
+          "400": Validation error
+          "409": Email already exists
+      - method: POST
+        path: /api/v1/auth/login
+        description: Login with email and password
+        auth_required: false
+        response_schema:
+          "200": '{ accessToken, user }'
+          "401": Invalid credentials
+      - method: POST
+        path: /api/v1/auth/forgot-password
+        description: Request password reset OTP
+        auth_required: false
+        response_schema:
+          "200": Success message
+      - method: POST
+        path: /api/v1/auth/verify-otp
+        description: Verify OTP code
+        auth_required: false
+        response_schema:
+          "200": Verified
+          "400": Invalid/expired OTP
+      - method: POST
+        path: /api/v1/auth/reset-password
+        description: Reset password with verified OTP
+        auth_required: false
+        response_schema:
+          "200": Password reset success
+    depends_on: []
+  - name: File Upload & AI Analysis
+    description: Upload handwritten images for dyslexia detection or handwriting translation
+    files:
+      - src/pages/Upload.jsx
+      - src/pages/Analyzing.jsx
+      - src/pages/Result.jsx
+      - src/services/aiService.js
+      - src/lib/api.js
+    endpoints:
+      - method: POST
+        path: /api/v1/ai/detections
+        description: Upload image for dyslexia detection
+        auth_required: true
+        request_schema:
+          body:
+            image: file (multipart/form-data)
+        response_schema:
+          "201": Detection result with confidence and severity
+          "400": No file or validation error
+          "401": Unauthorized
+          "502": AI model unavailable
+      - method: POST
+        path: /api/v1/ai/translations
+        description: Upload image for handwriting translation
+        auth_required: true
+        request_schema:
+          body:
+            image: file (multipart/form-data)
+        response_schema:
+          "201": Translation result with source and translated text
+          "400": No file or validation error
+          "401": Unauthorized
+          "502": AI model unavailable
+      - method: POST
+        path: /api/v1/ai/generate-text
+        description: Generate practice sentence
+        auth_required: true
+        request_schema:
+          body:
+            language: string (optional)
+            word_count: integer (optional)
+            max_letters: integer (optional)
+        response_schema:
+          "200": Generated sentence
+          "401": Unauthorized
+    depends_on:
+      - Authentication
+  - name: Profile Management
+    description: View and edit user profile, address, password
+    files:
+      - src/pages/Profile.jsx
+      - src/pages/EditInformationPage.jsx
+      - src/pages/EditAddressPage.jsx
+      - src/pages/EditPasswordPage.jsx
+      - src/services/profileService.js
+      - src/services/authService.js
+    endpoints:
+      - method: GET
+        path: /api/v1/profile
+        description: Get user profile
+        auth_required: true
+        response_schema:
+          "200": Profile object with personalInfo and address
+      - method: PATCH
+        path: /api/v1/profile
+        description: Update profile fields
+        auth_required: true
+        response_schema:
+          "200": Updated profile
+      - method: PATCH
+        path: /api/v1/profile/address
+        description: Update address
+        auth_required: true
+        response_schema:
+          "200": Updated profile with address
+      - method: PATCH
+        path: /api/v1/auth/change-password
+        description: Change password with OTP
+        auth_required: true
+        response_schema:
+          "200": Password changed
+    depends_on:
+      - Authentication
+  - name: History Management
+    description: View, search, filter, and delete history records
+    files:
+      - src/pages/History.jsx
+      - src/services/historyService.js
+    endpoints:
+      - method: GET
+        path: /api/v1/history
+        description: Get all history records
+        auth_required: true
+        response_schema:
+          "200": Array of history records
+      - method: DELETE
+        path: /api/v1/history/:id
+        description: Delete a history record
+        auth_required: true
+        response_schema:
+          "200": Deleted confirmation
+    depends_on:
+      - Authentication
+  - name: Accessibility Settings
+    description: High contrast mode, dyslexia-friendly font, text size, reduce motion
+    files:
+      - src/pages/AccessibilityPage.jsx
+      - src/AppContext.jsx
+    endpoints: []
+    depends_on: []
+  - name: Help & Tips
+    description: FAQ, writing tips, template download, medical disclaimer
+    files:
+      - src/pages/Help.jsx
+      - src/pages/PhotoTips.jsx
+    endpoints: []
+    depends_on: []
+known_limitations:
+  - issue: Email field is read-only on edit profile page
+    location: src/pages/EditInformationPage.jsx
+    impact: Users cannot change their email address
+  - issue: Export PDF shows placeholder toast only
+    location: src/pages/Result.jsx
+    impact: PDF export feature not yet implemented
+  - issue: No route protection (ProtectedRoute wrapper)
+    location: src/App.jsx
+    impact: Unauthenticated users can navigate to auth-required pages (though components handle gracefully)
+  - issue: History clear-all fires Promise.all on all items simultaneously
+    location: src/pages/History.jsx
+    impact: Could overwhelm server with many concurrent DELETE requests
+  - issue: Analyzing page has hardcoded 2-minute progress simulation
+    location: src/pages/Analyzing.jsx
+    impact: Progress does not reflect actual API progress
+  - issue: Multiple localStorage keys for user data (user vs dyslexialens-user)
+    location: src/AppContext.jsx
+    impact: Keys may get out of sync
+  - issue: No pagination on history API - fetches all records at once
+    location: src/services/historyService.js
+    impact: Performance degradation with large datasets

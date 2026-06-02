@@ -66,7 +66,7 @@ export default function Result() {
     }
   }, [historyItem?.raw_response])
 
-  const severityScoreVal = analysis?.severityScore ?? rawResponse?.severityScore ?? 0
+  const severityScoreVal = analysis?.severityScore ?? rawResponse?.severityScore ?? analysis?.confidence ?? rawResponse?.confidence ?? 0
   const severityScore = Math.round(severityScoreVal > 1 ? severityScoreVal : severityScoreVal * 100)
   const severityLevel = analysis?.severityLevel ?? rawResponse?.severityLevel ?? null
 

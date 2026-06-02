@@ -1,0 +1,1276 @@
+[
+  {
+    "id": "TC001",
+    "title": "Create a new account",
+    "description": "A new user can register successfully and see confirmation that the account was created.",
+    "category": "Authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the registration page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the account email field with a new valid email"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with a valid password"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the confirm password field with the same valid password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify account creation confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "Sign in with valid credentials",
+    "description": "A returning user can log in with valid credentials and enter the authenticated app.",
+    "category": "Authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the authenticated app is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Upload an image for dyslexia detection and review the result",
+    "description": "A signed-in user can upload an image, wait for analysis, and review the detection probability, severity, and recommendations.",
+    "category": "File Upload & AI Analysis",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to the upload page"
+      },
+      {
+        "type": "action",
+        "description": "Choose a valid image file for analysis"
+      },
+      {
+        "type": "action",
+        "description": "Submit the upload for dyslexia detection"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the analyzing state is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the detection result details are displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "Upload an image for handwriting translation and review the result",
+    "description": "A signed-in user can upload an image for translation and review the extracted source text and translated text.",
+    "category": "File Upload & AI Analysis",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to the upload page"
+      },
+      {
+        "type": "action",
+        "description": "Choose a valid image file for translation"
+      },
+      {
+        "type": "action",
+        "description": "Submit the upload for handwriting translation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the analyzing state is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the translated text result is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Change password successfully",
+    "description": "An authenticated user can change their password and see a success confirmation after saving.",
+    "category": "Profile Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the profile page"
+      },
+      {
+        "type": "action",
+        "description": "Open the password change form"
+      },
+      {
+        "type": "action",
+        "description": "Enter the current password"
+      },
+      {
+        "type": "action",
+        "description": "Enter a new valid password"
+      },
+      {
+        "type": "action",
+        "description": "Confirm the new password"
+      },
+      {
+        "type": "action",
+        "description": "Save the password changes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a password change success confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Update personal information",
+    "description": "An authenticated user can update profile details and see the saved information reflected in the profile view.",
+    "category": "Profile Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the profile page"
+      },
+      {
+        "type": "action",
+        "description": "Open the personal information editor"
+      },
+      {
+        "type": "action",
+        "description": "Update the editable profile fields"
+      },
+      {
+        "type": "action",
+        "description": "Save the profile changes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the updated profile information is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC007",
+    "title": "View saved history records",
+    "description": "A returning user can open history and see previously saved analyses.",
+    "category": "History Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the history page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify saved history records are displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC008",
+    "title": "Delete one history record",
+    "description": "A returning user can remove a single history item and see it disappear from the list.",
+    "category": "History Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the login credentials with {{LOGIN_USER}} and {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the history page"
+      },
+      {
+        "type": "action",
+        "description": "Open an existing history record"
+      },
+      {
+        "type": "action",
+        "description": "Delete the selected history record"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the deleted record is no longer displayed in the history list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC009",
+    "title": "Delete one saved history item",
+    "description": "A returning user can delete a single history record and see it removed from the list.",
+    "category": "History Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the history page"
+      },
+      {
+        "type": "action",
+        "description": "Delete one saved history item"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the deleted item is no longer visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC010",
+    "title": "Update personal details successfully",
+    "description": "An authenticated user can edit editable personal information and see the updated profile reflected after saving.",
+    "category": "Profile Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the login credentials with {{LOGIN_USER}} and {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the profile page"
+      },
+      {
+        "type": "action",
+        "description": "Open the personal information edit page"
+      },
+      {
+        "type": "action",
+        "description": "Update the editable personal information fields with valid new values"
+      },
+      {
+        "type": "action",
+        "description": "Save the profile changes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the updated personal information is displayed on the profile page"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC011",
+    "title": "Generate a practice sentence from writing preferences",
+    "description": "A signed-in user can set practice preferences and receive a generated sentence for writing support.",
+    "category": "File Upload & AI Analysis",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to the upload page"
+      },
+      {
+        "type": "action",
+        "description": "Enter practice sentence preferences"
+      },
+      {
+        "type": "action",
+        "description": "Request a generated practice sentence"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a generated practice sentence is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC012",
+    "title": "Search or filter previous analyses",
+    "description": "A returning user can narrow history results using the available search or filter controls.",
+    "category": "History Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the history page"
+      },
+      {
+        "type": "action",
+        "description": "Use the history search or filter controls"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the history list is filtered"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC013",
+    "title": "Update address successfully",
+    "description": "An authenticated user can change address details and see the saved address reflected afterward.",
+    "category": "Profile Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the login credentials with {{LOGIN_USER}} and {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the profile page"
+      },
+      {
+        "type": "action",
+        "description": "Open the address edit page"
+      },
+      {
+        "type": "action",
+        "description": "Update the city, postal code, or country with valid values"
+      },
+      {
+        "type": "action",
+        "description": "Save the address changes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the updated address information is displayed on the profile page"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC014",
+    "title": "Update the address on profile",
+    "description": "An authenticated user can update their address details and see the saved address reflected afterward.",
+    "category": "Profile Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the profile page"
+      },
+      {
+        "type": "action",
+        "description": "Open the address editor"
+      },
+      {
+        "type": "action",
+        "description": "Update the address fields"
+      },
+      {
+        "type": "action",
+        "description": "Save the address changes"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the updated address information is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC015",
+    "title": "View and filter history records",
+    "description": "A returning user can open history, narrow the list with search or filters, and see matching records.",
+    "category": "History Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the login credentials with {{LOGIN_USER}} and {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the history page"
+      },
+      {
+        "type": "action",
+        "description": "Search or filter the history list using a relevant term or criteria"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify matching history records are displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC016",
+    "title": "Open a saved analysis record",
+    "description": "A returning user can open a history item and view its full analysis details.",
+    "category": "History Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the history page"
+      },
+      {
+        "type": "action",
+        "description": "Open a saved history record"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the record detail view is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC017",
+    "title": "View saved profile details",
+    "description": "An authenticated user can open the profile page and review their saved personal information and address details.",
+    "category": "Profile Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the login credentials with {{LOGIN_USER}} and {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the profile page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify saved personal information is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify saved address details are displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC018",
+    "title": "Reset a forgotten password",
+    "description": "A user can request password recovery, verify the code, set a new password, and see reset confirmation.",
+    "category": "Authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the forgot password page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the account email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Request a password reset"
+      },
+      {
+        "type": "action",
+        "description": "Enter a valid OTP code"
+      },
+      {
+        "type": "action",
+        "description": "Set a new valid password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the reset form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify password reset confirmation is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC019",
+    "title": "Open a history record",
+    "description": "A returning user can select a history item and view its full analysis details.",
+    "category": "History Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the login credentials with {{LOGIN_USER}} and {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the history page"
+      },
+      {
+        "type": "action",
+        "description": "Open a history record from the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the selected history record details are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC020",
+    "title": "Clear all visible history records",
+    "description": "A returning user can clear the visible history list after confirming the action and see an empty state.",
+    "category": "History Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the login credentials with {{LOGIN_USER}} and {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the history page"
+      },
+      {
+        "type": "action",
+        "description": "Clear all visible history records"
+      },
+      {
+        "type": "action",
+        "description": "Confirm the deletion action"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the history list is emptied"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an empty state message is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC021",
+    "title": "See feedback for invalid login credentials",
+    "description": "A user entering incorrect credentials sees an invalid credentials message and remains on the login form.",
+    "category": "Authentication",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with an invalid email"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with an invalid password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an invalid credentials message is visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC022",
+    "title": "Switch to a dyslexia-friendly reading experience",
+    "description": "An authenticated user can change accessibility settings such as text size, contrast, and reading mode and see the updated experience applied.",
+    "category": "Accessibility Settings",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the accessibility settings page"
+      },
+      {
+        "type": "action",
+        "description": "Enable the available dyslexia-friendly settings"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the accessibility preferences are applied"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC023",
+    "title": "Enable accessibility preferences",
+    "description": "A user can turn on accessibility options and see the reading experience update to match their chosen preferences.",
+    "category": "Accessibility Settings",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open the accessibility settings page"
+      },
+      {
+        "type": "action",
+        "description": "Turn on high contrast mode"
+      },
+      {
+        "type": "action",
+        "description": "Enable the dyslexia-friendly font"
+      },
+      {
+        "type": "action",
+        "description": "Adjust the text size"
+      },
+      {
+        "type": "action",
+        "description": "Turn on reduce motion"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the interface updates to the selected accessibility preferences"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC024",
+    "title": "View help content and guidance",
+    "description": "Verifies that a user can open the help area and review the FAQ, usage guidance, and writing tips needed to learn the app.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the help page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the help guidance content is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the FAQ content is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the writing tips content is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC025",
+    "title": "Access the photo guidance page",
+    "description": "Verifies that a user can open the photo tips page and see step-by-step guidance for taking usable images.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the help page"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to view photo tips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the photo guidance content is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify step-by-step photo instructions are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC026",
+    "title": "Open help and tips content",
+    "description": "A user can access help content and browse guidance for using the app effectively.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the home page"
+      },
+      {
+        "type": "action",
+        "description": "Open the help and tips section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify help guidance content is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC027",
+    "title": "Access help content as a visitor",
+    "description": "Verifies that an unauthenticated visitor can open the help area and read support content without needing to sign in.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the help page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the help guidance content is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the support content is available to a visitor"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC028",
+    "title": "Review photo tips and templates",
+    "description": "A user can open the support content for image preparation and writing templates.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the home page"
+      },
+      {
+        "type": "action",
+        "description": "Open the photo tips or templates section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify photo preparation guidance is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify template or download guidance is displayed"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC029",
+    "title": "Warn when submitting analysis without a file",
+    "description": "A signed-in user sees a required-file validation message when trying to upload without selecting an image.",
+    "category": "File Upload & AI Analysis",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to the upload page"
+      },
+      {
+        "type": "action",
+        "description": "Submit the upload without choosing a file"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a file required validation message is visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC030",
+    "title": "Download available reference material",
+    "description": "Verifies that a user can access the downloadable writing support material from the help area.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the help page"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the downloadable support material"
+      },
+      {
+        "type": "action",
+        "description": "Click the download link for the available template or reference material"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the downloadable support material is available from the help page"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC031",
+    "title": "Review help and tips content",
+    "description": "A user can open the support content area and read guidance that helps them use the app effectively.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open the help and tips page"
+      },
+      {
+        "type": "action",
+        "description": "Browse the FAQ section"
+      },
+      {
+        "type": "action",
+        "description": "Open the photo tips guidance"
+      },
+      {
+        "type": "action",
+        "description": "Open the templates or downloads section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify help guidance content is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify usage tips or downloadable resources are displayed"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC032",
+    "title": "View the read-only email field in profile editing",
+    "description": "An authenticated user can view their email address in profile editing but cannot modify the email field.",
+    "category": "Profile Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the profile page"
+      },
+      {
+        "type": "action",
+        "description": "Open the personal information editor"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the email field is read only"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC033",
+    "title": "Start using the app from the landing page",
+    "description": "A visitor can use the landing page call to action to reach the authentication entry point.",
+    "category": "Landing Page",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the home page"
+      },
+      {
+        "type": "action",
+        "description": "Click the primary call to action to begin using the app"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the authentication entry point is displayed"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC034",
+    "title": "Keep email address read-only",
+    "description": "An authenticated user cannot edit the email field on the personal information form.",
+    "category": "Profile Management",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the login credentials with {{LOGIN_USER}} and {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the profile page"
+      },
+      {
+        "type": "action",
+        "description": "Open the personal information edit page"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to edit the email field"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the email field remains read-only"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC035",
+    "title": "Return from photo guidance to help content",
+    "description": "Verifies that a user can move from photo tips back to the main help content without losing access to support information.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the help page"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to view photo tips"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to return to help content"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the help guidance content is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the photo guidance content is no longer shown"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC036",
+    "title": "Review the landing page value proposition",
+    "description": "A visitor can understand the product purpose and key benefits from the home page content.",
+    "category": "Landing Page",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the home page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the product introduction is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the highlighted features and testimonials are visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC037",
+    "title": "Review the medical disclaimer",
+    "description": "Verifies that a user can find and read the disclaimer content from the help area.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the help page"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the disclaimer section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the disclaimer content is displayed"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC038",
+    "title": "Read the app disclaimer",
+    "description": "A user can open the disclaimer content and review the usage limitations before continuing.",
+    "category": "Help & Tips",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the home page"
+      },
+      {
+        "type": "action",
+        "description": "Open the disclaimer section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify disclaimer content is displayed"
+      }
+    ],
+    "priority": "Low"
+  }
+]
