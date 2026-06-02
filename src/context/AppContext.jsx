@@ -76,7 +76,10 @@ export function AppProvider({ children }) {
     if (typeof window === 'undefined') {
       return false
     }
-    return Boolean(window.localStorage.getItem('accessToken'))
+    return Boolean(
+      window.localStorage.getItem('accessToken') ||
+      window.sessionStorage.getItem('accessToken')
+    )
   })
 
   const [user, setUser] = useState(() => {
@@ -89,6 +92,14 @@ export function AppProvider({ children }) {
   const [authReady, setAuthReady] = useState(false)
   const [accessibility, setAccessibility] = useState(loadAccessibilitySettings)
 
+  const clearSession = () => {
+    window.localStorage.removeItem('accessToken')
+    window.sessionStorage.removeItem('accessToken')
+    window.localStorage.removeItem('user')
+    window.localStorage.removeItem('dyslexialens-user')
+    window.localStorage.setItem('dyslexialens-logged-in', 'false')
+  }
+
   useEffect(() => {
     if (typeof window === 'undefined') {
       return undefined
@@ -97,7 +108,9 @@ export function AppProvider({ children }) {
     let cancelled = false
 
     const hydrateUser = async () => {
-      const token = window.localStorage.getItem('accessToken')
+      const token =
+        window.localStorage.getItem('accessToken') ||
+        window.sessionStorage.getItem('accessToken')
 
       if (!token) {
         if (!cancelled) {
@@ -127,10 +140,7 @@ export function AppProvider({ children }) {
         }
       } catch {
         if (!cancelled) {
-          window.localStorage.removeItem('accessToken')
-          window.localStorage.removeItem('user')
-          window.localStorage.removeItem('dyslexialens-user')
-          window.localStorage.setItem('dyslexialens-logged-in', 'false')
+          clearSession()
           setIsLoggedIn(false)
           setUser(null)
         }
@@ -148,10 +158,11 @@ export function AppProvider({ children }) {
     }
   }, [])
 
-  const login = ({ accessToken, user: userData, ...legacyUserData } = {}) => {
+  const login = ({ accessToken, user: userData, remember = true, ...legacyUserData } = {}) => {
     setIsLoggedIn(true)
     if (accessToken) {
-      window.localStorage.setItem('accessToken', accessToken)
+      const storage = remember ? window.localStorage : window.sessionStorage
+      storage.setItem('accessToken', accessToken)
     }
 
     const normalizedUser = normalizeUser(userData || legacyUserData)
@@ -165,6 +176,7 @@ export function AppProvider({ children }) {
     setIsLoggedIn(false)
     setUser(null)
     window.localStorage.removeItem('accessToken')
+    window.sessionStorage.removeItem('accessToken')
     window.localStorage.removeItem('user')
     window.localStorage.removeItem('dyslexialens-user')
     window.localStorage.setItem('dyslexialens-logged-in', 'false')

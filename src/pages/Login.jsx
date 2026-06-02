@@ -19,6 +19,13 @@ export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false)
   const [remember, setRemember] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+  const errorRef = React.useRef(null)
+
+  React.useEffect(() => {
+    if (authError && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [authError])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -42,6 +49,7 @@ export default function Login() {
         setLoginContext({
           accessToken: res.data?.accessToken,
           user: res.data?.user,
+          remember,
         })
 
         navigate('/')
@@ -107,7 +115,7 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="px-5 sm:px-8 pb-6 sm:pb-8 pt-4 sm:pt-6">
             {authError && authError.type === 'attempts-1' && (
-              <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[rgba(130,24,26,0.2)] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
+              <div ref={errorRef} className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[rgba(130,24,26,0.2)] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
                 <div className="flex items-start gap-3">
                   <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
                   <div>
@@ -118,7 +126,7 @@ export default function Login() {
               </div>
             )}
             {authError && authError.type === 'attempts-2' && (
-              <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[rgba(130,24,26,0.2)] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
+              <div ref={errorRef} className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[rgba(130,24,26,0.2)] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
                 <div className="flex items-start gap-3">
                   <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
                   <div>
@@ -129,7 +137,7 @@ export default function Login() {
               </div>
             )}
             {authError && authError.type === 'notfound' && (
-              <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[#82181A33] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
+              <div ref={errorRef} className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[#82181A33] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
                 <div className="flex items-start gap-3">
                   <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
                   <div>

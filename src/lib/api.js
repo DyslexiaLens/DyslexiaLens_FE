@@ -9,8 +9,11 @@ export const api = axios.create({
   },
 });
 
+const getToken = () =>
+  localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken");
+  const token = getToken();
 
   config.headers = config.headers || {};
 
