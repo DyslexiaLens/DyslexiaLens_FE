@@ -213,8 +213,8 @@ export default function ForgotPassword() {
         )}
 
         {step === 2 && (
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={() => {
               setOtpError(null)
               setStep(1)
@@ -229,8 +229,8 @@ export default function ForgotPassword() {
         )}
 
         {step === 3 && (
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={() => {
               setResetError(null)
               setStep(2)
@@ -251,13 +251,12 @@ export default function ForgotPassword() {
             <div className="px-5 sm:px-8 pt-6 sm:pt-8">
               <div className="flex items-center justify-center">
                 {/* Padlock Icon Container */}
-                <div className={`h-12 w-12 rounded-full flex items-center justify-center transition-colors duration-300 ${
-                  theme === 'dark' ? 'bg-[rgba(28,57,142,0.3)] text-[#8ec5ff]' : 'bg-[#dbeafe] text-[#1447e6]'
-                }`}>
+                <div className={`h-12 w-12 rounded-full flex items-center justify-center transition-colors duration-300 ${theme === 'dark' ? 'bg-[rgba(28,57,142,0.3)] text-[#8ec5ff]' : 'bg-[#dbeafe] text-[#1447e6]'
+                  }`}>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 17V14M12 14C12.5523 14 13 13.5523 13 13C13 12.4477 12.5523 12 12 12C11.4477 12 11 12.4477 11 13C11 13.5523 11.4477 14 12 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M8 10V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M12 17V14M12 14C12.5523 14 13 13.5523 13 13C13 12.4477 12.5523 12 12 12C11.4477 12 11 12.4477 11 13C11 13.5523 11.4477 14 12 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="2" />
+                    <path d="M8 10V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 </div>
               </div>
@@ -272,43 +271,39 @@ export default function ForgotPassword() {
             <form onSubmit={handleEmailSubmit} className="px-5 sm:px-8 pb-6 sm:pb-8 pt-4 sm:pt-6">
               {/* Standardized Alert Banners */}
               {authError && (
-                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${
-                  authError.type === 'connection'
+                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${authError.type === 'connection'
                     ? (theme === 'dark' ? 'bg-[rgba(115,62,10,0.2)] border-[#a65f00]' : 'bg-[#fefce8] border-[#fdc700]')
                     : (theme === 'dark' ? 'bg-[rgba(130,24,26,0.2)] border-[#c10007]' : 'bg-[#fef2f2] border-[#ff6467]')
-                }`}>
+                  }`}>
                   <div className="flex items-start gap-3">
                     {authError.type === 'connection' ? (
-                      <svg 
-                        width="20" 
-                        height="20" 
-                        viewBox="0 0 20 20" 
-                        fill="none" 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className={`h-5 w-5 mt-0.5 shrink-0 ${
-                          theme === 'dark' ? 'text-[#fdc700]' : 'text-[#a65f00]'
-                        }`}
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`h-5 w-5 mt-0.5 shrink-0 ${theme === 'dark' ? 'text-[#fdc700]' : 'text-[#a65f00]'
+                          }`}
                       >
-                        <path d="M10 3.3L2.5 15.8h15L10 3.3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M10 7.5v4.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                        <circle cx="10" cy="13.3" r="0.8" fill="currentColor"/>
+                        <path d="M10 3.3L2.5 15.8h15L10 3.3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M10 7.5v4.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        <circle cx="10" cy="13.3" r="0.8" fill="currentColor" />
                       </svg>
                     ) : (
                       <img src={RedX} alt="error" className="h-5 w-5 mt-0.5 shrink-0" />
                     )}
                     <div className="flex-1">
-                      <h3 className={`font-semibold text-[14px] leading-[20px] ${
-                        authError.type === 'connection'
+                      <h3 className={`font-semibold text-[14px] leading-[20px] ${authError.type === 'connection'
                           ? (theme === 'dark' ? 'text-[#ffdf20]' : 'text-[#894b00]')
                           : (theme === 'dark' ? 'text-[#ffa2a2]' : 'text-[#9f0712]')
-                      }`}>
+                        }`}>
                         {authError.title}
                       </h3>
-                      <p className={`mt-1 text-[14px] leading-[20px] ${
-                        authError.type === 'connection'
+                      <p className={`mt-1 text-[14px] leading-[20px] ${authError.type === 'connection'
                           ? (theme === 'dark' ? 'text-[#fdc700]' : 'text-[#a65f00]')
                           : (theme === 'dark' ? 'text-[#ff6467]' : 'text-[#c10007]')
-                      }`}>
+                        }`}>
                         {authError.message}
                       </p>
                     </div>
@@ -325,32 +320,32 @@ export default function ForgotPassword() {
                       <img src={EmailIcon} alt="email" className="h-5 w-5 opacity-70" />
                     </div>
                     <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="text"
-                    placeholder="nama@email.com"
-                    disabled={loading}
-                    className={`pl-[44px] pr-4 ${inputClassName(Boolean(errors.email))}`}
-                  />
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      type="text"
+                      placeholder="nama@email.com"
+                      disabled={loading}
+                      className={`pl-[44px] pr-4 ${inputClassName(Boolean(errors.email))}`}
+                    />
+                  </div>
+                  {errors.email ? (
+                    <p className="mt-2 text-[14px] text-[#e7000b]">{errors.email}</p>
+                  ) : (
+                    <p className={`mt-2 text-[12px] ${theme === 'dark' ? 'text-[#99a1af]' : 'text-[#6a7282]'}`}>
+                      Kode OTP akan dikirim ke email ini
+                    </p>
+                  )}
                 </div>
-                {errors.email ? (
-                  <p className="mt-2 text-[14px] text-[#e7000b]">{errors.email}</p>
-                ) : (
-                  <p className={`mt-2 text-[12px] ${theme === 'dark' ? 'text-[#99a1af]' : 'text-[#6a7282]'}`}>
-                    Kode OTP akan dikirim ke email ini
-                  </p>
-                )}
-              </div>
 
-              <Button
-                type="submit"
-                loading={loading}
-                isDark={theme === 'dark'}
-                className="w-full h-11"
-              >
-                Kirim OTP
-              </Button>
-            </div>
+                <Button
+                  type="submit"
+                  loading={loading}
+                  isDark={theme === 'dark'}
+                  className="w-full h-11"
+                >
+                  Kirim OTP
+                </Button>
+              </div>
 
               {/* Back to Login Links */}
               <div className="mt-6 text-center text-[14px]">
@@ -359,11 +354,10 @@ export default function ForgotPassword() {
               </div>
 
               {/* Flow Guide Card */}
-              <div className={`mt-[24px] rounded-[10px] border-[0.727px] px-[16.727px] py-[16.727px] ${
-                theme === 'dark' 
-                  ? 'border-[#4a5565] bg-[rgba(54,65,83,0.5)] text-[#d1d5dc]' 
+              <div className={`mt-[24px] rounded-[10px] border-[0.727px] px-[16.727px] py-[16.727px] ${theme === 'dark'
+                  ? 'border-[#4a5565] bg-[rgba(54,65,83,0.5)] text-[#d1d5dc]'
                   : 'border-[#d1d5dc] bg-[#f3f4f6] text-[#364153]'
-              }`}>
+                }`}>
                 <p className="text-[12px] font-semibold leading-[16px]">Alur reset password:</p>
                 <div className={`mt-2 space-y-1 text-[12px] leading-[16px] ${theme === 'dark' ? 'text-[#99a1af]' : 'text-[#4a5565]'}`}>
                   <div className="flex items-center gap-1.5 flex-wrap">
@@ -398,43 +392,39 @@ export default function ForgotPassword() {
             <form onSubmit={handleOtpSubmit} className="px-5 sm:px-8 pb-6 sm:pb-8 pt-4 sm:pt-6">
               {/* 1. Connections Warning Yellow Box (Figma Node 8-22462 & 8-22561 stylized aligned to existing theme system) */}
               {otpError && otpError.type === 'connection' && (
-                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] relative ${
-                  theme === 'dark' 
-                    ? 'bg-[rgba(115,62,10,0.2)] border-[#a65f00]' 
+                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] relative ${theme === 'dark'
+                    ? 'bg-[rgba(115,62,10,0.2)] border-[#a65f00]'
                     : 'bg-[#fefce8] border-[#fdc700]'
-                }`}>
+                  }`}>
                   <div className="flex items-start gap-3">
                     {/* warning triangle vector */}
-                    <svg 
-                      width="20" 
-                      height="20" 
-                      viewBox="0 0 20 20" 
-                      fill="none" 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      className={`h-5 w-5 mt-0.5 shrink-0 ${
-                        theme === 'dark' ? 'text-[#fdc700]' : 'text-[#a65f00]'
-                      }`}
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-5 w-5 mt-0.5 shrink-0 ${theme === 'dark' ? 'text-[#fdc700]' : 'text-[#a65f00]'
+                        }`}
                     >
-                      <path d="M10 3.3L2.5 15.8h15L10 3.3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M10 7.5v4.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                      <circle cx="10" cy="13.3" r="0.8" fill="currentColor"/>
+                      <path d="M10 3.3L2.5 15.8h15L10 3.3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M10 7.5v4.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      <circle cx="10" cy="13.3" r="0.8" fill="currentColor" />
                     </svg>
                     <div className="flex-1 pr-6">
-                      <h3 className={`font-semibold text-[14px] leading-[20px] ${
-                        theme === 'dark' ? 'text-[#ffdf20]' : 'text-[#894b00]'
-                      }`}>
+                      <h3 className={`font-semibold text-[14px] leading-[20px] ${theme === 'dark' ? 'text-[#ffdf20]' : 'text-[#894b00]'
+                        }`}>
                         {otpError.title}
                       </h3>
-                      <p className={`mt-1 text-[14px] leading-[20px] ${
-                        theme === 'dark' ? 'text-[#fdc700]' : 'text-[#a65f00]'
-                      }`}>
+                      <p className={`mt-1 text-[14px] leading-[20px] ${theme === 'dark' ? 'text-[#fdc700]' : 'text-[#a65f00]'
+                        }`}>
                         {otpError.message}
                       </p>
                     </div>
                     {/* Close dismiss trigger */}
-                    <button 
-                      type="button" 
-                      onClick={() => setOtpError(null)} 
+                    <button
+                      type="button"
+                      onClick={() => setOtpError(null)}
                       className="absolute right-3 top-3 opacity-60 hover:opacity-100 transition-opacity"
                       aria-label="Tutup"
                     >
@@ -449,22 +439,19 @@ export default function ForgotPassword() {
 
               {/* 2. Validation / Incorrect OTP Red Alert Box (Figma Node 8-22888 & 8-22805 stylized aligned to existing theme system) */}
               {otpError && otpError.type === 'invalid' && (
-                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${
-                  theme === 'dark' 
-                    ? 'bg-[rgba(130,24,26,0.2)] border-[#c10007]' 
+                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark'
+                    ? 'bg-[rgba(130,24,26,0.2)] border-[#c10007]'
                     : 'bg-[#fef2f2] border-[#ff6467]'
-                }`}>
+                  }`}>
                   <div className="flex items-start gap-3">
                     <img src={RedX} alt="error" className="h-5 w-5 mt-0.5 shrink-0" />
                     <div className="flex-1">
-                      <h3 className={`font-semibold text-[14px] leading-[20px] ${
-                        theme === 'dark' ? 'text-[#ffa2a2]' : 'text-[#9f0712]'
-                      }`}>
+                      <h3 className={`font-semibold text-[14px] leading-[20px] ${theme === 'dark' ? 'text-[#ffa2a2]' : 'text-[#9f0712]'
+                        }`}>
                         {otpError.title}
                       </h3>
-                      <p className={`mt-1 text-[14px] leading-[20px] ${
-                        theme === 'dark' ? 'text-[#ff6467]' : 'text-[#c10007]'
-                      }`}>
+                      <p className={`mt-1 text-[14px] leading-[20px] ${theme === 'dark' ? 'text-[#ff6467]' : 'text-[#c10007]'
+                        }`}>
                         {otpError.message}
                       </p>
                     </div>
@@ -474,22 +461,19 @@ export default function ForgotPassword() {
 
               {/* 3. Server Failure Red Alert Box */}
               {otpError && otpError.type === 'server' && (
-                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${
-                  theme === 'dark' 
-                    ? 'bg-[rgba(130,24,26,0.2)] border-[#c10007]' 
+                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark'
+                    ? 'bg-[rgba(130,24,26,0.2)] border-[#c10007]'
                     : 'bg-[#fef2f2] border-[#ff6467]'
-                }`}>
+                  }`}>
                   <div className="flex items-start gap-3">
                     <img src={RedX} alt="error" className="h-5 w-5 mt-0.5 shrink-0" />
                     <div className="flex-1">
-                      <h3 className={`font-semibold text-[14px] leading-[20px] ${
-                        theme === 'dark' ? 'text-[#ffa2a2]' : 'text-[#9f0712]'
-                      }`}>
+                      <h3 className={`font-semibold text-[14px] leading-[20px] ${theme === 'dark' ? 'text-[#ffa2a2]' : 'text-[#9f0712]'
+                        }`}>
                         {otpError.title}
                       </h3>
-                      <p className={`mt-1 text-[14px] leading-[20px] ${
-                        theme === 'dark' ? 'text-[#ff6467]' : 'text-[#c10007]'
-                      }`}>
+                      <p className={`mt-1 text-[14px] leading-[20px] ${theme === 'dark' ? 'text-[#ff6467]' : 'text-[#c10007]'
+                        }`}>
                         {otpError.message}
                       </p>
                     </div>
@@ -502,36 +486,36 @@ export default function ForgotPassword() {
                 <div>
                   <label className={`block text-[14px] font-medium mb-2 ${theme === 'dark' ? 'text-white' : 'text-[#101828]'}`}>Kode OTP</label>
                   <div className="relative">
-                  <input
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    type="text"
-                    maxLength={6}
-                    placeholder="112233"
-                    disabled={loading}
-                    className={otpInputClassName(Boolean(otpError && otpError.type === 'invalid'))}
-                  />
+                    <input
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      type="text"
+                      maxLength={6}
+                      placeholder="112233"
+                      disabled={loading}
+                      className={otpInputClassName(Boolean(otpError && otpError.type === 'invalid'))}
+                    />
+                  </div>
+                  <p className={`mt-2 text-[12px] text-center ${theme === 'dark' ? 'text-[#99a1af]' : 'text-[#6a7282]'}`}>
+                    Masukkan OTP yang dikirim ke email Anda
+                  </p>
                 </div>
-                <p className={`mt-2 text-[12px] text-center ${theme === 'dark' ? 'text-[#99a1af]' : 'text-[#6a7282]'}`}>
-                  Masukkan OTP yang dikirim ke email Anda
-                </p>
+
+                <Button
+                  type="submit"
+                  loading={loading}
+                  isDark={theme === 'dark'}
+                  className="w-full h-11"
+                >
+                  Verifikasi OTP
+                </Button>
               </div>
 
-              <Button
-                type="submit"
-                loading={loading}
-                isDark={theme === 'dark'}
-                className="w-full h-11"
-              >
-                Verifikasi OTP
-              </Button>
-            </div>
-
-            {/* Resend Link Code */}
-            <div className="mt-6 text-center text-[14px]">
-              <span className={theme === 'dark' ? 'text-[#99a1af]' : 'text-[#4a5565]'}>Tidak menerima kode? </span>
-                <button 
-                  type="button" 
+              {/* Resend Link Code */}
+              <div className="mt-6 text-center text-[14px]">
+                <span className={theme === 'dark' ? 'text-[#99a1af]' : 'text-[#4a5565]'}>Tidak menerima kode? </span>
+                <button
+                  type="button"
                   disabled={loading}
                   onClick={() => {
                     setOtpError(null)
@@ -564,11 +548,10 @@ export default function ForgotPassword() {
               </div>
 
               {/* Flow Guide Card */}
-              <div className={`mt-[24px] rounded-[10px] border-[0.727px] px-[16.727px] py-[16.727px] ${
-                theme === 'dark' 
-                  ? 'border-[#4a5565] bg-[rgba(54,65,83,0.5)] text-[#d1d5dc]' 
+              <div className={`mt-[24px] rounded-[10px] border-[0.727px] px-[16.727px] py-[16.727px] ${theme === 'dark'
+                  ? 'border-[#4a5565] bg-[rgba(54,65,83,0.5)] text-[#d1d5dc]'
                   : 'border-[#d1d5dc] bg-[#f3f4f6] text-[#364153]'
-              }`}>
+                }`}>
                 <p className="text-[12px] font-semibold leading-[16px]">Alur reset password:</p>
                 <div className={`mt-2 space-y-1 text-[12px] leading-[16px] ${theme === 'dark' ? 'text-[#99a1af]' : 'text-[#4a5565]'}`}>
                   <div className="flex items-center gap-1.5 flex-wrap">
@@ -594,13 +577,12 @@ export default function ForgotPassword() {
             <div className="px-5 sm:px-8 pt-6 sm:pt-8 text-center">
               <div className="flex items-center justify-center mb-6">
                 {/* Lock icon container */}
-                <div className={`h-12 w-12 rounded-full flex items-center justify-center transition-colors duration-300 ${
-                  theme === 'dark' ? 'bg-[rgba(28,57,142,0.3)] text-[#8ec5ff]' : 'bg-[#dbeafe] text-[#1447e6]'
-                }`}>
+                <div className={`h-12 w-12 rounded-full flex items-center justify-center transition-colors duration-300 ${theme === 'dark' ? 'bg-[rgba(28,57,142,0.3)] text-[#8ec5ff]' : 'bg-[#dbeafe] text-[#1447e6]'
+                  }`}>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 17V14M12 14C12.5523 14 13 13.5523 13 13C13 12.4477 12.5523 12 12 12C11.4477 12 11 12.4477 11 13C11 13.5523 11.4477 14 12 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M8 10V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M12 17V14M12 14C12.5523 14 13 13.5523 13 13C13 12.4477 12.5523 12 12 12C11.4477 12 11 12.4477 11 13C11 13.5523 11.4477 14 12 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="2" />
+                    <path d="M8 10V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 </div>
               </div>
@@ -613,20 +595,17 @@ export default function ForgotPassword() {
             {/* Reset Password Form */}
             <form onSubmit={handlePasswordSubmit} className="px-5 sm:px-8 pb-6 sm:pb-8 pt-4 sm:pt-6">
               {resetError && (
-                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${
-                  theme === 'dark' ? 'bg-[rgba(130,24,26,0.2)] border-[#c10007]' : 'bg-[#fef2f2] border-[#ff6467]'
-                }`}>
+                <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[rgba(130,24,26,0.2)] border-[#c10007]' : 'bg-[#fef2f2] border-[#ff6467]'
+                  }`}>
                   <div className="flex items-start gap-3">
                     <img src={RedX} alt="error" className="h-5 w-5 mt-0.5 shrink-0" />
                     <div className="flex-1">
-                      <h3 className={`font-semibold text-[14px] leading-[20px] ${
-                        theme === 'dark' ? 'text-[#ffa2a2]' : 'text-[#9f0712]'
-                      }`}>
+                      <h3 className={`font-semibold text-[14px] leading-[20px] ${theme === 'dark' ? 'text-[#ffa2a2]' : 'text-[#9f0712]'
+                        }`}>
                         Ubah Password Gagal
                       </h3>
-                      <p className={`mt-1 text-[14px] leading-[20px] ${
-                        theme === 'dark' ? 'text-[#ff6467]' : 'text-[#c10007]'
-                      }`}>
+                      <p className={`mt-1 text-[14px] leading-[20px] ${theme === 'dark' ? 'text-[#ff6467]' : 'text-[#c10007]'
+                        }`}>
                         {resetError}
                       </p>
                     </div>
@@ -646,7 +625,7 @@ export default function ForgotPassword() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Min. 6 karakter, huruf & angka"
+                      placeholder="Min. 8 karakter, huruf & angka"
                       disabled={loading}
                       className={`pl-[44px] pr-[48px] ${inputClassName(Boolean(errors.password))}`}
                     />
@@ -711,20 +690,19 @@ export default function ForgotPassword() {
           <div className={`rounded-[16px] p-6 sm:p-8 ${theme === 'dark' ? 'bg-[#1e2939] text-white' : 'bg-white text-[var(--text-primary)]'} drop-shadow-[0px_20px_12.5px_rgba(0,0,0,0.1),0px_8px_5px_rgba(0,0,0,0.1)]`}>
             {/* Green checkmark circle wrapper */}
             <div className="flex flex-col items-center py-8">
-              <div 
-                className={`h-16 w-16 rounded-full flex items-center justify-center transition-colors duration-300 ${
-                  theme === 'dark' ? 'bg-[rgba(13,84,43,0.3)] text-[#00c950]' : 'bg-[#dcfce7] text-[#0db14b]'
-                }`}
+              <div
+                className={`h-16 w-16 rounded-full flex items-center justify-center transition-colors duration-300 ${theme === 'dark' ? 'bg-[rgba(13,84,43,0.3)] text-[#00c950]' : 'bg-[#dcfce7] text-[#0db14b]'
+                  }`}
               >
-                <svg 
-                  width="32" 
-                  height="32" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="shrink-0"
                 >
-                  <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
 
@@ -734,9 +712,8 @@ export default function ForgotPassword() {
               </h2>
 
               {/* Message */}
-              <p className={`mt-3 text-center text-[16px] leading-[24px] font-normal ${
-                theme === 'dark' ? 'text-[#99a1af]' : 'text-[#4a5565]'
-              }`}>
+              <p className={`mt-3 text-center text-[16px] leading-[24px] font-normal ${theme === 'dark' ? 'text-[#99a1af]' : 'text-[#4a5565]'
+                }`}>
                 Password Anda telah berhasil diperbarui. Silakan login kembali dengan password baru Anda.
               </p>
 

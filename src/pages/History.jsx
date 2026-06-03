@@ -22,6 +22,8 @@ function resolveImageUrl(imageUrl) {
   return `${baseUrl}/${imageUrl.replace(/^\//, '').replace(/\\/g, '/')}`
 }
 
+const PLACEHOLDER_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='none' viewBox='0 0 24 24' stroke='%239ca3af' stroke-width='1.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'/%3E%3C/svg%3E"
+
 function formatHistoryDate(value) {
   const parsed = new Date(value)
   if (Number.isNaN(parsed.getTime())) {
@@ -399,6 +401,9 @@ export default function History() {
                           onError={(e) => {
                             if (e.target.src !== item.fallbackUrl) {
                               e.target.src = item.fallbackUrl
+                            } else {
+                              e.target.onerror = null
+                              e.target.src = PLACEHOLDER_SVG
                             }
                           }}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"

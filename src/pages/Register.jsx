@@ -314,7 +314,7 @@ export default function Register() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Min. 6 karakter, huruf & angka"
+                    placeholder="Min. 8 karakter, huruf & angka"
                     disabled={loading}
                     className={`pl-[44px] pr-[48px] ${inputClassName(Boolean(errors.password))}`}
                   />
