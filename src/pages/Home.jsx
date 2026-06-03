@@ -92,13 +92,19 @@ export default function Home() {
                 <>
                   <ActionButton
                     variant="primary"
+                    size="lg"
                     loading={primaryLoading}
                     onClick={() => navigate('/register')}
                     className="whitespace-nowrap"
                   >
                     Daftar & Mulai Analisis
                   </ActionButton>
-                  <ActionButton variant="secondary" loading={secondaryLoading} onClick={() => navigate('/login')}>
+                  <ActionButton
+                    variant="secondary"
+                    size="lg"
+                    loading={secondaryLoading}
+                    onClick={() => navigate('/login')}
+                  >
                     Sudah Punya Akun?
                   </ActionButton>
                 </>
@@ -370,13 +376,19 @@ export default function Home() {
               <>
                 <ActionButton
                   variant="cta"
+                  size="lg"
                   loading={primaryLoading}
                   onClick={() => navigate('/register')}
                   className="whitespace-nowrap"
                 >
                   Daftar & Mulai Sekarang
                 </ActionButton>
-                <ActionButton variant="inverse" loading={secondaryLoading} onClick={() => navigate('/login')}>
+                <ActionButton
+                  variant="inverse"
+                  size="lg"
+                  loading={secondaryLoading}
+                  onClick={() => navigate('/login')}
+                >
                   Sudah Punya Akun?
                 </ActionButton>
               </>

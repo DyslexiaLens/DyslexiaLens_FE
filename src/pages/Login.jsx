@@ -42,7 +42,7 @@ export default function Login() {
         setAuthError(null)
 
         const res = await loginService({
-          email: email.trim(),
+          email: email.trim().toLowerCase(),
           password,
         })
 
@@ -104,9 +104,19 @@ export default function Login() {
         <div className={`${theme === 'dark' ? 'bg-[#1e2939] text-white' : 'bg-white text-[var(--text-primary)]'} rounded-[16px] drop-shadow-[0px_20px_12.5px_rgba(0,0,0,0.1),0px_8px_5px_rgba(0,0,0,0.1)]`}>
           <div className="px-5 sm:px-8 pt-6 sm:pt-8">
             <div className="flex items-center justify-center gap-4">
-              <div className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-gradient-to-br from-[#2b7fff] to-[#9810fa]">
-                <img alt="logo" src={assets.logoMark} className="h-5 w-5" />
-              </div>
+              <div
+                            className="
+                              flex h-16 w-16 items-center justify-center
+                              rounded-[10px]
+                              bg-transparent
+                            "
+                          >
+                            <img
+                              alt=""
+                              src={assets.logoMark}
+                              className="h-17 w-17"
+                            />
+                          </div>
             </div>
 
             <h1 className="mt-6 text-[30px] font-semibold text-center">Selamat Datang</h1>

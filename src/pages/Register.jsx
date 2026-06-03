@@ -24,7 +24,7 @@ export default function Register() {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [confirm, setConfirm] = React.useState('')
-  const [agreed, setAgreed] = React.useState(true)
+  const [agreed, setAgreed] = React.useState(false)
   const [showPassword, setShowPassword] = React.useState(false)
   const [errors, setErrors] = React.useState(initialFieldErrors)
   const [authError, setAuthError] = React.useState(null)
@@ -112,7 +112,7 @@ export default function Register() {
 
         await register({ 
           fullName: trimmedName, 
-          email: trimmedEmail, 
+          email: trimmedEmail.toLowerCase(), 
           password, 
         }) 
 
@@ -169,9 +169,19 @@ export default function Register() {
           <div className={`rounded-[16px] ${theme === 'dark' ? 'bg-[#1e2939] text-white' : 'bg-white text-[var(--text-primary)]'} drop-shadow-[0px_20px_12.5px_rgba(0,0,0,0.1),0px_8px_5px_rgba(0,0,0,0.1)]`}>
           <div className="px-5 sm:px-8 pt-6 sm:pt-8">
             <div className="flex justify-center">
-              <div className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-gradient-to-br from-[#2b7fff] to-[#9810fa]">
-                <img alt="logo" src={assets.logoMark} className="h-5 w-5" />
-              </div>
+              <div
+                            className="
+                              flex h-16 w-16 items-center justify-center
+                              rounded-[10px]
+                              bg-transparent
+                            "
+                          >
+                            <img
+                              alt=""
+                              src={assets.logoMark}
+                              className="h-17 w-17"
+                            />
+                          </div>
             </div>
 
             <h1 className={`mt-6 text-center text-[30px] font-semibold leading-[36px] ${theme === 'dark' ? 'text-white' : 'text-[#101828]'}`}>Buat Akun Baru</h1>
@@ -425,16 +435,16 @@ export default function Register() {
               Akun Berhasil Dibuat!
             </h2>
 
-            {/* Message 1: Email sent */}
+            {/* Message 1: Success message */}
             <p className={`mt-3 text-center text-[16px] leading-[24px] font-normal ${
               theme === 'dark' ? 'text-[#99a1af]' : 'text-[#4a5565]'
             }`}>
-              Email verifikasi telah dikirim ke <span className="font-semibold">{successEmail}</span>
+              Pendaftaran akun Anda berhasil diproses!
             </p>
 
-            {/* Message 2: Check instructions */}
+            {/* Message 2: Login explanation */}
             <p className="mt-3 text-center text-[14px] leading-[20px] text-[#6a7282] max-w-[320px]">
-              Silakan cek inbox Anda dan klik link verifikasi untuk mengaktifkan akun.
+              Anda sekarang dapat menggunakan email dan password yang didaftarkan untuk masuk.
             </p>
 
             {/* Message 3: Redirect timer */}

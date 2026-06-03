@@ -17,6 +17,9 @@ import Profile from './pages/Profile'
 import AccessibilityPage from './pages/Accessibility'
 import { EditAddressPage, EditInformationPage, EditPasswordPage } from './pages/ProfileEditPages'
 import { ProfileAddressSuccessPage, ProfileInfoSuccessPage, ProfilePasswordSuccessPage } from './pages/ProfileSuccessPages'
+import About from './pages/About'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 import Header from './components/Header'
 import Footer from './components/Footer'
 
@@ -54,6 +57,9 @@ export default function App() {
               <Route path="/result" element={wrap(<Result />)} />
               <Route path="/history" element={wrap(<History />)} />
               <Route path="/help" element={wrap(<Help />)} />
+              <Route path="/about" element={wrap(<About />)} />
+              <Route path="/privacy" element={wrap(<Privacy />)} />
+              <Route path="/terms" element={wrap(<Terms />)} />
               <Route path="/profile" element={wrap(<Profile />)} />
               <Route path="/profile/accessibility" element={wrap(<AccessibilityPage />)} />
               <Route path="/profile/edit-info" element={wrap(<EditInformationPage />)} />

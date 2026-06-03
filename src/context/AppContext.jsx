@@ -69,7 +69,16 @@ export function AppProvider({ children }) {
       return 'light'
     }
 
-    return window.localStorage.getItem('dyslexialens-theme') || 'light'
+    const storedTheme = window.localStorage.getItem('dyslexialens-theme')
+    if (storedTheme) {
+      return storedTheme
+    }
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark'
+    }
+
+    return 'light'
   })
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => {

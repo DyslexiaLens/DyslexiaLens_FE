@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import { AppContext } from '../context/AppContext'
 import Button from '../components/ui/Button'
 
@@ -71,14 +72,14 @@ function TipCard({ icon, title, description, theme, iconBgLight, iconBgDark, tit
   const isDark = theme === 'dark'
 
   return (
-    <div className="flex-1 rounded-[14px] p-3 text-center">
-      <div className={`mx-auto mb-3 flex h-[40px] w-[40px] items-center justify-center rounded-[10px] ${isDark ? iconBgDark : iconBgLight}`}>
-        <img src={icon} alt="" className="h-7 w-7" />
+    <div className="flex-1 rounded-[14px] p-4 text-center">
+      <div className={`mx-auto mb-4 flex h-[48px] w-[48px] items-center justify-center rounded-[12px] ${isDark ? iconBgDark : iconBgLight}`}>
+        <img src={icon} alt="" className="h-8 w-8" />
       </div>
-      <h3 className={`text-[14px] font-semibold leading-[20px] ${isDark ? titleColorDark : titleColorLight}`}>
+      <h3 className={`text-[16px] font-bold leading-[22px] ${isDark ? titleColorDark : titleColorLight}`}>
         {title}
       </h3>
-      <p className={`mt-1 text-[12px] leading-[16px] ${isDark ? 'text-[#99a1af]' : 'text-[#4a5565]'}`}>
+      <p className={`mt-2 text-[14px] leading-[20px] ${isDark ? 'text-[#99a1af]' : 'text-[#4a5565]'}`}>
         {description}
       </p>
     </div>
@@ -122,19 +123,19 @@ export default function Help() {
             <p className={`mt-2 text-[14px] leading-[20px] ${mutedText}`}>Informasi penting tentang DyslexiaLens</p>
           </div>
 
-          <div className={`mt-8 rounded-[12px] border p-4 ${noticeClass}`}>
-            <div className="flex gap-2">
-              <div className="mt-[2px] shrink-0">
+          <div className={`mt-8 rounded-[12px] border p-5 ${noticeClass}`}>
+            <div className="flex gap-3">
+              <div className="mt-[4px] shrink-0">
                 <IconWarning />
               </div>
               <div>
-                <p className={`text-[14px] font-semibold leading-[20px] ${isDark ? 'text-[#dbeafe]' : 'text-[#2b7fff]'}`}>
+                <p className={`text-[16px] font-bold leading-[22px] ${isDark ? 'text-[#dbeafe]' : 'text-[#2b7fff]'}`}>
                   Penting - Bukan Alat Diagnostik
                 </p>
-                <p className={`mt-1 text-[12px] leading-[16px] ${smallMutedText}`}>
+                <p className={`mt-2 text-[14px] leading-[22px] ${smallMutedText}`}>
                   DyslexiaLens adalah alat screening berbasis AI untuk mengidentifikasi pola visual yang terkait dengan disleksia dalam tulisan tangan. Ini tidak memberikan diagnosis medis. Hasil harus digunakan sebagai indikator awal dan diskusi dengan profesional pendidikan, dokter anak, atau spesialis.
                 </p>
-                <p className={`mt-3 text-[12px] leading-[16px] ${smallMutedText}`}>
+                <p className={`mt-3 text-[14px] leading-[22px] ${smallMutedText}`}>
                   Selalu konsultasikan dengan profesional untuk evaluasi klinis dan diagnosis.
                 </p>
               </div>
@@ -142,7 +143,7 @@ export default function Help() {
           </div>
 
           <div className="mt-10">
-            <h2 className={`text-[18px] font-bold leading-[24px] ${isDark ? 'text-white' : 'text-[#101828]'}`}>Tips Hasil Terbaik</h2>
+            <h2 className={`text-[20px] font-bold leading-[26px] ${isDark ? 'text-white' : 'text-[#101828]'}`}>Tips Hasil Terbaik</h2>
             <div className="mt-5 flex flex-col md:flex-row gap-4">
               <TipCard
                 icon={lightingIcon}
@@ -178,30 +179,44 @@ export default function Help() {
           </div>
 
           <div className="mt-10">
-            <h2 className={`text-[18px] font-bold leading-[24px] ${isDark ? 'text-white' : 'text-[#101828]'}`}>Pertanyaan Umum</h2>
+            <h2 className={`text-[20px] font-bold leading-[26px] ${isDark ? 'text-white' : 'text-[#101828]'}`}>Pertanyaan Umum</h2>
 
-            <div className="mt-4 space-y-2">
+            <div className="mt-4 space-y-3">
               {FAQ_ITEMS.map((faq) => {
                 const open = openFaq === faq.id
                 return (
                   <div
                     key={faq.id}
-                    className={`overflow-hidden rounded-[10px] border transition-colors duration-200 ${isDark ? 'border-transparent bg-[#1b2534]' : 'border-[#e5e7eb] bg-white'
+                    className={`overflow-hidden rounded-[12px] border transition-colors duration-200 ${isDark ? 'border-transparent bg-[#1b2534]' : 'border-[#e5e7eb] bg-white'
                       }`}
                   >
                     <button
                       type="button"
                       onClick={() => setOpenFaq(open ? null : faq.id)}
-                      className={`flex w-full items-center justify-between px-3 py-3 text-left text-[12px] leading-[16px] ${isDark ? 'text-[#d1d5dc]' : 'text-[#364153]'}`}
+                      className={`flex w-full items-center justify-between px-4 py-4 text-left text-[14px] sm:text-[15px] font-semibold leading-[20px] ${isDark ? 'text-[#d1d5dc]' : 'text-[#364153]'}`}
                     >
                       <span>{faq.question}</span>
                       <Chevron open={open} muted={isDark ? 'text-[#99a1af]' : 'text-[#98a2b3]'} />
                     </button>
-                    {open && (
-                      <div className={`px-3 pb-3 text-[12px] leading-[16px] ${isDark ? 'text-[#d1d5dc]' : 'text-[#4a5565]'}`}>
-                        {faq.answer}
-                      </div>
-                    )}
+                    <AnimatePresence initial={false}>
+                      {open && (
+                        <motion.div
+                          initial="collapsed"
+                          animate="open"
+                          exit="collapsed"
+                          variants={{
+                            open: { opacity: 1, height: 'auto' },
+                            collapsed: { opacity: 0, height: 0 }
+                          }}
+                          transition={{ duration: 0.2, ease: 'easeInOut' }}
+                          className="overflow-hidden"
+                        >
+                          <div className={`px-4 pb-4 text-[14px] sm:text-[15px] leading-[22px] border-t border-dashed ${isDark ? 'border-slate-800 text-[#d1d5dc] pt-3' : 'border-slate-200 text-[#4a5565] pt-3'}`}>
+                            {faq.answer}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 )
               })}

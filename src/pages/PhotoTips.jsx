@@ -204,8 +204,8 @@ export default function PhotoTips() {
                   Unduh dan cetak template grid sebelum memulai proses penulisan. Template ini memiliki grid proporsional yang membantu AI mengukur letak dan ukuran karakter secara tepat.
                 </p>
                 <a
-                  href="/writing-template.svg"
-                  download="writing-template.svg"
+                  href="/writing-template.pdf"
+                  download="writing-template.pdf"
                   className="inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-[12px] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold shadow-md shadow-blue-500/10 active:translate-y-px transition duration-200"
                 >
                   <DownloadIcon className="w-5 h-5" />

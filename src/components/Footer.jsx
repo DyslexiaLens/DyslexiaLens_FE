@@ -20,7 +20,15 @@ export default function Footer() {
 
   const handleCompanyClick = (item, e) => {
     e.preventDefault()
-    navigate('/')
+    if (item === 'Tentang Kami') {
+      navigate('/about')
+    } else if (item === 'Privasi') {
+      navigate('/privacy')
+    } else if (item === 'Syarat & Ketentuan') {
+      navigate('/terms')
+    } else {
+      navigate('/')
+    }
   }
 
   return (
@@ -29,9 +37,19 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_0.8fr_0.8fr_0.9fr]">
           <div className="max-w-sm">
             <a href="/" onClick={(e) => { e.preventDefault(); navigate('/') }} className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-gradient-to-br from-[#2b7fff] to-[#9810fa] shadow-[0px_4px_3px_rgba(0,0,0,0.1),0px_2px_2px_rgba(0,0,0,0.1)]">
-                <img alt="" src={assets.logoMark} className="h-5 w-5" />
-              </div>
+              <div
+                            className="
+                              flex h-16 w-16 items-center justify-center
+                              rounded-[10px]
+                              bg-transparent
+                            "
+                          >
+                            <img
+                              alt=""
+                              src={assets.logoMark}
+                              className="h-17 w-17"
+                            />
+                          </div>
               <span className="text-xl font-bold text-[var(--text-primary)]">DyslexiaLens</span>
             </a>
             <p className="mt-4 text-sm leading-6 text-[var(--text-secondary)]">

@@ -3,6 +3,7 @@ import { AppContext } from '../../context/AppContext'
 
 export default function ActionButton({
   variant = 'primary',
+  size = 'md',
   loading = false,
   disabled = false,
   onClick,
@@ -32,13 +33,18 @@ export default function ActionButton({
       'border border-white/40 bg-white/20 text-white shadow-[0px_20px_25px_0px_rgba(0,0,0,0.1),0px_8px_10px_0px_rgba(0,0,0,0.1)] hover:bg-white/25 active:translate-y-px',
   }
 
+  const isLarge = size === 'lg' || variant === 'cta' || variant === 'heroSecondary'
+  const sizeClasses = isLarge
+    ? `min-w-[266px] h-14 px-8 text-[18px] ${variant === 'cta' ? 'font-bold' : 'font-medium'} leading-[28px] whitespace-nowrap`
+    : 'h-12 px-5 text-base font-semibold'
+
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={isDisabled}
       aria-busy={loading || undefined}
-      className={`inline-flex items-center justify-center rounded-[14px] transition duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#155dfc] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60 ${variant === 'cta' ? 'min-w-[266px] px-[24px] py-[25px] text-[18px] font-bold' : ''} ${variant === 'heroSecondary' ? 'min-w-[266px] px-[24px] py-[25px] text-[18px] font-medium leading-[28px] whitespace-nowrap' : 'h-12 px-5 text-base font-semibold'} ${styles[variant]} ${className}`}
+      className={`inline-flex items-center justify-center rounded-[14px] transition duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#155dfc] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60 ${sizeClasses} ${styles[variant]} ${className}`}
     >
       {loading ? (
         <span className="mr-3 inline-flex h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" aria-hidden />
@@ -47,7 +53,7 @@ export default function ActionButton({
       ) : null}
       <span>{children}</span>
       {!loading && iconSrc && iconPosition === 'right' ? (
-        <img alt="" src={iconSrc} className={`ml-3 flex-none ${variant === 'cta' ? 'h-4 w-4' : 'h-4 w-4'}`} aria-hidden />
+        <img alt="" src={iconSrc} className="ml-3 h-4 w-4 flex-none" aria-hidden />
       ) : null}
     </button>
   )

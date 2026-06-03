@@ -30,6 +30,9 @@ export default function Header() {
   }, [isMobileMenuOpen])
 
   const handleLogout = async () => {
+    const confirmLogout = window.confirm("Apakah Anda yakin ingin keluar dari akun?")
+    if (!confirmLogout) return
+
     try {
       await logoutRequest()
     } catch {
@@ -63,11 +66,21 @@ export default function Header() {
   return (
     <header className="theme-header sticky top-0 z-50 border-b backdrop-blur-md transition-colors duration-300" role="banner">
       {/* ----------------- DESKTOP NAV (Width >= lg) ----------------- */}
-      <div className="hidden lg:flex mx-auto max-w-[1280px] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:flex-nowrap lg:px-8">
+      <div className="hidden lg:flex mx-auto max-w-[1280px] items-center justify-between gap-4 px-4 py-1 sm:px-6 lg:flex-nowrap lg:px-8">
         <Link to="/" className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-gradient-to-br from-[#2b7fff] to-[#9810fa] shadow-[0px_4px_3px_rgba(0,0,0,0.1),0px_2px_2px_rgba(0,0,0,0.1)]">
-            <img alt="" src={assets.logoMark} className="h-5 w-5" />
-          </div>
+          <div
+          className={`
+            flex h-16 w-16 items-center justify-center
+            rounded-[10px]
+            bg-transparent
+          `}
+        >
+          <img
+            alt=""
+            src={assets.logoMark}
+            className="h-17 w-17"
+          />
+        </div>
           <span className="text-xl font-bold text-[var(--text-primary)]">DyslexiaLens</span>
         </Link>
 
@@ -170,14 +183,30 @@ export default function Header() {
           : 'bg-[rgba(255,255,255,0.8)] border-[#e5e7eb] border-b-[0.787px]'
           }`}>
           {/* Logo with Figma shadow & background gradient */}
-          <Link to="/" className="flex items-center gap-2.5" onClick={() => setIsMobileMenuOpen(false)}>
+          <Link
+            to="/"
+            className="flex items-center gap-3"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             <div
-              className="flex h-9 w-9 items-center justify-center rounded-[10px] shadow-[0px_4px_3px_rgba(0,0,0,0.1),0px_2px_2px_rgba(0,0,0,0.1)]"
-              style={{ backgroundImage: 'linear-gradient(135deg, rgb(43, 127, 255) 0%, rgb(152, 16, 250) 100%)' }}
+              className="
+                flex h-16 w-16 items-center justify-center
+                rounded-[10px]
+                bg-transparent
+              "
             >
-              <img alt="" src={assets.logoMark} className="h-[20px] w-[20px]" />
+              <img
+                alt=""
+                src={assets.logoMark}
+                className="h-17 w-17"
+              />
             </div>
-            <span className={`text-[18px] font-bold tracking-tight ${theme === 'dark' ? 'text-white' : 'text-[#101828]'}`}>
+
+            <span
+              className={`text-xl font-bold ${
+                theme === 'dark' ? 'text-white' : 'text-[#101828]'
+              }`}
+            >
               DyslexiaLens
             </span>
           </Link>
@@ -203,7 +232,7 @@ export default function Header() {
             className={`absolute top-[64px] left-0 w-full z-40 flex flex-col border-b shadow-2xl backdrop-blur-xl transition-all duration-300 ${theme === 'dark'
               ? 'bg-[rgba(16,24,40,0.95)] border-[#364153]'
               : 'bg-[rgba(255,255,255,0.96)] border-[#e5e7eb]'
-            }`}>
+              }`}>
             <div className="flex flex-col w-full p-4 gap-6">
 
               {/* --- GUEST USER SLIDE (isLoggedIn = false) --- */}
