@@ -37,12 +37,7 @@ export default function Home() {
   const { theme, isLoggedIn } = React.useContext(AppContext)
   const navigate = useNavigate()
   const [primaryLoading] = React.useState(false)
-  const [secondaryLoading, setSecondaryLoading] = React.useState(false)
-
-  const handleAction = (setter) => () => {
-    setter(true)
-    window.setTimeout(() => setter(false), 900)
-  }
+  const [secondaryLoading] = React.useState(false)
 
   return (
     <div id="home" className="overflow-hidden bg-[var(--page-bg)] text-[var(--text-primary)] transition-colors duration-300">

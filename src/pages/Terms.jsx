@@ -110,7 +110,7 @@ export default function Terms() {
             <div className={`border-t pt-5 ${sectionBorder}`}>
               <h2 className={`text-[16px] font-bold mb-2 ${headingText}`}>3. Batasan Tanggung Jawab</h2>
               <p className={mutedText}>
-                Layanan ini disediakan "sebagaimana adanya" (*as is*) tanpa jaminan dalam bentuk apa pun. Kami tidak bertanggung jawab atas:
+                Layanan ini disediakan &quot;sebagaimana adanya&quot; (*as is*) tanpa jaminan dalam bentuk apa pun. Kami tidak bertanggung jawab atas:
               </p>
               <ul className={`list-disc pl-5 mt-2 space-y-1 ${mutedText}`}>
                 <li>Keputusan klinis, medis, akademis, atau keputusan pribadi apa pun yang diambil berdasarkan hasil skrining dari aplikasi ini.</li>

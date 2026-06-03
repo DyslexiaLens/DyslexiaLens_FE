@@ -29,7 +29,6 @@ export default function Register() {
   const [errors, setErrors] = React.useState(initialFieldErrors)
   const [authError, setAuthError] = React.useState(null)
   const [isSuccess, setIsSuccess] = React.useState(false)
-  const [successEmail, setSuccessEmail] = React.useState('')
   const [countdown, setCountdown] = React.useState(3)
   const [loading, setLoading] = React.useState(false)
 
@@ -116,7 +115,6 @@ export default function Register() {
           password, 
         }) 
 
-        setSuccessEmail(trimmedEmail) 
         setIsSuccess(true) 
       } catch (error) { 
         const status = error.response?.status 

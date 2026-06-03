@@ -311,7 +311,7 @@ export default function Result() {
                     <div>
                       <h4 className="text-sm font-semibold mb-1">Teks OCR (Hasil Pengenalan Kata)</h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
-                        Menampilkan kata-kata yang dideteksi oleh AI dari tulisan tangan. Analisis kata ini membantu mengenali kecenderungan memutarbalikkan huruf seperti 'b' dan 'd', atau 'p' dan 'q'.
+                        Menampilkan kata-kata yang dideteksi oleh AI dari tulisan tangan. Analisis kata ini membantu mengenali kecenderungan memutarbalikkan huruf seperti &apos;b&apos; dan &apos;d&apos;, atau &apos;p&apos; dan &apos;q&apos;.
                       </p>
                     </div>
                   </div>
@@ -387,7 +387,7 @@ export default function Result() {
                     <div>
                       <h4 className="text-sm font-semibold mb-1">Langkah Evaluasi</h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
-                        Bandingkan kolom "Teks Asli" dengan "Teks Terjemahan" untuk melihat jenis kekeliruan apa yang paling sering dialami anak, guna merancang materi latihan menulis yang spesifik.
+                        Bandingkan kolom &quot;Teks Asli&quot; dengan &quot;Teks Terjemahan&quot; untuk melihat jenis kekeliruan apa yang paling sering dialami anak, guna merancang materi latihan menulis yang spesifik.
                       </p>
                     </div>
                   </div>

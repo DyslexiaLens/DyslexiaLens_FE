@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import Button from '../components/ui/Button'
+import { generatePracticeText } from '../services/aiService'
 
 // ── Local asset imports (use exported SVGs from assets/) ─────────────────────
 import tipsIcon from '../assets/Tips.svg'
@@ -20,8 +21,6 @@ import networkErrLight from '../assets/NetworkErrorLight.svg'
 import networkErrDark from '../assets/NetworkErrorDark.svg'
 import serverErrLight from '../assets/ServerErrorLight.svg'
 import serverErrDark from '../assets/ServerErrorDark.svg'
-import { generatePracticeText } from '../services/aiService'
-
 // ── Back arrow SVG (inline — no separate asset needed) ───────────────────────
 function BackArrow({ isDark }) {
   const color = isDark ? '#d1d5dc' : '#364153'
@@ -102,43 +101,26 @@ export default function Upload() {
   const [file, setFile] = React.useState(null)
   const [errorType, setErrorType] = React.useState(null)
   const [isDragOver, setIsDragOver] = React.useState(false)
-  const [practiceSentence, setPracticeSentence] = React.useState('')
-  const [isLoadingSentence, setIsLoadingSentence] = React.useState(false)
   const fileInputRef = React.useRef(null)
+  const [generatedText, setGeneratedText] = React.useState('')
+  const [isLoadingText, setIsLoadingText] = React.useState(false)
+
+  const fetchGeneratedText = React.useCallback(async () => {
+    setIsLoadingText(true)
+    try {
+      const res = await generatePracticeText()
+      setGeneratedText(res?.sentence || '')
+    } catch {
+      setGeneratedText('')
+    } finally {
+      setIsLoadingText(false)
+    }
+  }, [])
 
   React.useEffect(() => {
-    if (!authReady || !isLoggedIn) {
-      return undefined
-    }
-
-    let cancelled = false
-
-    const loadPracticeSentence = async () => {
-      setIsLoadingSentence(true)
-
-      try {
-        const response = await generatePracticeText()
-
-        if (!cancelled) {
-          setPracticeSentence(response?.sentence || '')
-        }
-      } catch {
-        if (!cancelled) {
-          setPracticeSentence('')
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoadingSentence(false)
-        }
-      }
-    }
-
-    loadPracticeSentence()
-
-    return () => {
-      cancelled = true
-    }
-  }, [authReady, isLoggedIn])
+    if (!authReady || !isLoggedIn) return
+    fetchGeneratedText()
+  }, [authReady, isLoggedIn, fetchGeneratedText])
 
   // ── File handling ──────────────────────────────────────────────────────────
   const handleFile = React.useCallback((f) => {
@@ -271,6 +253,51 @@ export default function Upload() {
             </div>
             <ChevronRight isDark={isDark} />
           </Link>
+
+          {/* ── Generated Text Section ── */}
+          <div className={`rounded-[14px] border p-4 mb-5 ${isDark ? 'bg-[rgba(43,127,255,0.08)] border-[rgba(43,127,255,0.3)]' : 'bg-[#eff6ff] border-[#bfdbfe]'}`}>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[14px] font-semibold text-[var(--text-primary)]">Tulis Teks Ini pada Template</p>
+              <button
+                onClick={fetchGeneratedText}
+                disabled={isLoadingText}
+                className="text-[13px] font-medium text-[#2b7fff] hover:underline disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+              >
+                {isLoadingText ? (
+                  <>
+                    <svg className="animate-spin w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Memuat...
+                  </>
+                ) : (
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 2v6h-6" /><path d="M3 12a9 9 0 0 1 15-6.7L21 8" /><path d="M3 22v-6h6" /><path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+                    </svg>
+                    Generate Ulang
+                  </>
+                )}
+              </button>
+            </div>
+            {isLoadingText && !generatedText ? (
+              <div className="flex items-center gap-2 text-[var(--text-secondary)] text-[14px]">
+                <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Memuat teks latihan...
+              </div>
+            ) : generatedText ? (
+              <p className={`text-[16px] font-semibold leading-relaxed tracking-wide ${isDark ? 'text-[#93c5fd]' : 'text-[#1e40af]'}`}>
+                {generatedText}
+              </p>
+            ) : (
+              <p className="text-[var(--text-secondary)] text-[14px]">Gagal memuat teks. Klik &quot;Generate Ulang&quot; untuk mencoba lagi.</p>
+            )}
+            <p className="text-[var(--text-secondary)] text-[12px] mt-2">Tuliskan teks di atas pada template yang sudah diunduh, lalu foto dan upload di bawah ini.</p>
+          </div>
 
           {/* ── Error Alert ── */}
           {errorCfg && (

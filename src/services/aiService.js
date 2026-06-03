@@ -43,6 +43,7 @@ export const generatePracticeText = async ({
     language,
     word_count: wordCount,
     max_letters: maxLetters,
+    seed: Date.now(),
   });
 
   return res.data.data;
