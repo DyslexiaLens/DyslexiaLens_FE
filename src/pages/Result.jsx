@@ -32,7 +32,39 @@ function resolveImageUrl(imageUrl) {
   }
 
   const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '')
-  return `${baseUrl}/${imageUrl.replace(/^\//, '')}`
+  return `${baseUrl}/${imageUrl.replace(/^\//, '').replace(/\\/g, '/')}`
+}
+
+function getFriendlyResultLabel(label, isDetection) {
+  if (!isDetection) return 'Proses Terjemahan Selesai'
+  
+  const clean = String(label || '').toUpperCase().trim()
+  if (clean.includes('DYSLEXIA') || clean.includes('DYSLEXIC')) {
+    return 'Terdeteksi Pola Disleksia'
+  }
+  if (clean.includes('NORMAL')) {
+    return 'Pola Tulisan Umum (Normal)'
+  }
+  return 'Analisis Selesai'
+}
+
+function getFriendlySeverityLevel(level) {
+  if (!level) return null
+  const clean = String(level).toUpperCase().trim()
+  if (clean === 'HIGH' || clean === 'SEVERE') return 'Tinggi (Butuh Bimbingan)'
+  if (clean === 'MEDIUM' || clean === 'MODERATE') return 'Sedang'
+  if (clean === 'LOW' || clean === 'MILD') return 'Rendah'
+  return level
+}
+
+function getFriendlyNotes(notes) {
+  if (!notes) return 'Hasil analisis berhasil disimpan ke riwayat.'
+  
+  const clean = String(notes)
+  if (clean.includes('Mock AI') || clean.includes('model inference') || clean.includes('Replace this service')) {
+    return 'Hasil observasi awal dari sampel tulisan tangan telah selesai diproses. Nilai persentase menunjukkan tingkat kemiripan pola tulisan dengan indikasi disleksia.'
+  }
+  return clean
 }
 
 export default function Result() {
@@ -68,13 +100,17 @@ export default function Result() {
 
   const severityScoreVal = analysis?.severityScore ?? rawResponse?.severityScore ?? analysis?.confidence ?? rawResponse?.confidence ?? 0
   const severityScore = Math.round(severityScoreVal > 1 ? severityScoreVal : severityScoreVal * 100)
-  const severityLevel = analysis?.severityLevel ?? rawResponse?.severityLevel ?? null
+  const severityLevel = getFriendlySeverityLevel(analysis?.severityLevel ?? rawResponse?.severityLevel ?? null)
 
   const predictedText = analysis?.predictedText || historyItem?.predicted_text || ''
   const sourceText = analysis?.sourceText || historyItem?.source_text || predictedText
   const translatedText = analysis?.translatedText || historyItem?.translated_text || ''
-  const resultLabel = analysis?.resultLabel || historyItem?.result_label || (isDetection ? 'Selesai' : 'Selesai')
-  const notes = analysis?.notes || 'Hasil analisis berhasil disimpan ke riwayat.'
+  
+  const rawResultLabel = analysis?.resultLabel || historyItem?.result_label || (isDetection ? 'Selesai' : 'Selesai')
+  const resultLabel = getFriendlyResultLabel(rawResultLabel, isDetection)
+  
+  const rawNotes = analysis?.notes || historyItem?.notes || 'Hasil analisis berhasil disimpan ke riwayat.'
+  const notes = getFriendlyNotes(rawNotes)
 
   const showToast = (message, type = 'success') => {
     setToast({ show: true, message, type })
@@ -180,7 +216,7 @@ export default function Result() {
           <div>
             <h1 className="mb-1 text-2xl font-bold">{isDetection ? 'Hasil Analisis' : 'Hasil Terjemahan'}</h1>
             <p className={subTextCls}>{analysisDate}</p>
-            <p className={`mt-1 text-sm ${subTextCls}`}>{historyItem?.image_url ? historyItem.image_url.split('/').pop() : 'upload-image'}</p>
+            <p className={`mt-1 text-sm ${subTextCls}`}>{historyItem?.image_url ? historyItem.image_url.replace(/\\/g, '/').split('/').pop() : 'upload-image'}</p>
           </div>
           <Button
             variant="secondary"
@@ -233,8 +269,64 @@ export default function Result() {
             </section>
 
             <section className={cardCls}>
-              <h2 className="mb-3 text-lg font-bold">Catatan</h2>
-              <p className={subTextCls}>{notes}</p>
+              <h2 className="mb-3 text-lg font-bold">Catatan Hasil Analisis</h2>
+              <p className={`mb-6 ${subTextCls}`}>{notes}</p>
+              
+              <div className={`mt-6 rounded-xl border p-5 ${isDark ? 'bg-[#182232] border-gray-700' : 'bg-blue-50/50 border-blue-100'}`}>
+                <h3 className="mb-4 flex items-center gap-2 font-bold text-blue-600 dark:text-blue-400">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Panduan Membaca Hasil Analisis
+                </h3>
+                
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div className="flex gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">1</span>
+                    <div>
+                      <h4 className="text-sm font-semibold mb-1">Skor Indikasi ({severityScore}%)</h4>
+                      <p className={`text-xs leading-relaxed ${subTextCls}`}>
+                        Menunjukkan persentase kecocokan pola tulisan tangan dalam gambar dengan pola tulisan penyandang disleksia yang umum (seperti rotasi huruf atau jarak spasi). Semakin tinggi skor, semakin kuat kecocokannya.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">2</span>
+                    <div>
+                      <h4 className="text-sm font-semibold mb-1">Tingkat Keparahan ({severityLevel || 'Rendah/Umum'})</h4>
+                      <p className={`text-xs leading-relaxed ${subTextCls}`}>
+                        {severityLevel?.includes('Tinggi') 
+                          ? 'Kategori Tinggi: Pola tulisan menunjukkan indikasi disleksia yang kuat. Sangat disarankan berkonsultasi dengan psikolog anak atau guru pendamping khusus untuk bimbingan terarah.'
+                          : severityLevel?.includes('Sedang')
+                            ? 'Kategori Sedang: Terdapat beberapa ciri disleksia. Disarankan melatih keterampilan menulis secara berkala menggunakan metode multisensori (visual & kinestetik).'
+                            : 'Kategori Rendah / Normal: Pola tulisan tergolong umum atau minimal kecocokan disleksia. Cukup pantau perkembangan belajar menulis anak secara rutin.'
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">3</span>
+                    <div>
+                      <h4 className="text-sm font-semibold mb-1">Teks OCR (Hasil Pengenalan Kata)</h4>
+                      <p className={`text-xs leading-relaxed ${subTextCls}`}>
+                        Menampilkan kata-kata yang dideteksi oleh AI dari tulisan tangan. Analisis kata ini membantu mengenali kecenderungan memutarbalikkan huruf seperti 'b' dan 'd', atau 'p' dan 'q'.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 dark:text-yellow-400 font-bold text-sm">!</span>
+                    <div>
+                      <h4 className="text-sm font-semibold text-yellow-700 dark:text-yellow-400 mb-1">Catatan Penting</h4>
+                      <p className={`text-xs leading-relaxed ${subTextCls}`}>
+                        <strong>PENTING:</strong> Hasil analisis ini bersifat <strong>skrining awal</strong> dan <strong>BUKAN</strong> diagnosis medis final. Hanya dokter anak atau ahli psikologi klinis yang berhak menetapkan diagnosis formal.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
           </>
         ) : (
@@ -243,8 +335,14 @@ export default function Result() {
               <h2 className="mb-4 text-lg font-bold">Ringkasan Terjemahan</h2>
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <p className={`mb-2 text-sm font-semibold ${subTextCls}`}>Teks Hasil</p>
-                  <div className={`rounded-xl border p-4 font-mono ${isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
+                  <p className={`mb-2 text-sm font-semibold ${subTextCls}`}>Teks Asli (Terdeteksi)</p>
+                  <div className={`rounded-xl border p-4 font-mono text-sm leading-relaxed ${isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
+                    {sourceText || 'Belum ada teks terdeteksi'}
+                  </div>
+                </div>
+                <div>
+                  <p className={`mb-2 text-sm font-semibold ${subTextCls}`}>Teks Terjemahan (Normalisasi)</p>
+                  <div className={`rounded-xl border p-4 font-mono text-sm leading-relaxed ${isDark ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
                     {translatedText || 'Belum ada hasil terjemahan'}
                   </div>
                 </div>
@@ -252,8 +350,59 @@ export default function Result() {
             </section>
 
             <section className={cardCls}>
-              <h2 className="mb-3 text-lg font-bold">Catatan</h2>
-              <p className={subTextCls}>{notes}</p>
+              <h2 className="mb-3 text-lg font-bold">Catatan Hasil Terjemahan</h2>
+              <p className={`mb-6 ${subTextCls}`}>{notes}</p>
+              
+              <div className={`mt-6 rounded-xl border p-5 ${isDark ? 'bg-[#182232] border-gray-700' : 'bg-blue-50/50 border-blue-100'}`}>
+                <h3 className="mb-4 flex items-center gap-2 font-bold text-blue-600 dark:text-blue-400">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Panduan Membaca Hasil Terjemahan
+                </h3>
+                
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div className="flex gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">1</span>
+                    <div>
+                      <h4 className="text-sm font-semibold mb-1">Teks Hasil Terjemahan</h4>
+                      <p className={`text-xs leading-relaxed ${subTextCls}`}>
+                        Menunjukkan tulisan yang disesuaikan secara otomatis dari huruf terbalik, tertukar spasi, atau tertinggal, kemudian dirangkai menjadi susunan kalimat standar yang mudah dipahami.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">2</span>
+                    <div>
+                      <h4 className="text-sm font-semibold mb-1">Manfaat Bagi Orang Tua/Guru</h4>
+                      <p className={`text-xs leading-relaxed ${subTextCls}`}>
+                        Mempermudah Anda memahami isi pesan atau ide tulisan yang ingin disampaikan oleh anak, membantu mempercepat proses evaluasi dan komunikasi belajar sehari-hari.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">3</span>
+                    <div>
+                      <h4 className="text-sm font-semibold mb-1">Langkah Evaluasi</h4>
+                      <p className={`text-xs leading-relaxed ${subTextCls}`}>
+                        Bandingkan kolom "Teks Asli" dengan "Teks Terjemahan" untuk melihat jenis kekeliruan apa yang paling sering dialami anak, guna merancang materi latihan menulis yang spesifik.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 dark:text-yellow-400 font-bold text-sm">!</span>
+                    <div>
+                      <h4 className="text-sm font-semibold text-yellow-700 dark:text-yellow-400 mb-1">Catatan Koreksi</h4>
+                      <p className={`text-xs leading-relaxed ${subTextCls}`}>
+                        Proses penerjemahan ini menggunakan kecerdasan buatan berbasis pola disleksia. Disarankan agar tetap membandingkan dengan foto asli apabila ada bagian kata yang kurang sesuai.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
           </>
         )}

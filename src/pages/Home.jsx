@@ -360,15 +360,10 @@ export default function Home() {
                 </button>
 
                 <button
-                  onClick={handleAction(setSecondaryLoading)}
-                  disabled={secondaryLoading}
-                  className="inline-flex h-14 min-w-[266px] items-center justify-center rounded-[14px] border-[1.455px] border-[rgba(255,255,255,0.4)] bg-[rgba(255,255,255,0.2)] text-white text-[18px] font-semibold shadow-[0px_20px_25px_rgba(0,0,0,0.1),0px_8px_10px_rgba(0,0,0,0.1)] transition duration-200 hover:bg-white/25 active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                  onClick={() => navigate('/history')}
+                  className="inline-flex h-14 min-w-[266px] items-center justify-center rounded-[14px] border-[1.455px] border-[rgba(255,255,255,0.4)] bg-[rgba(255,255,255,0.2)] text-white text-[18px] font-semibold shadow-[0px_20px_25px_rgba(0,0,0,0.1),0px_8px_10px_rgba(0,0,0,0.1)] transition duration-200 hover:bg-white/25 active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
                 >
-                  {secondaryLoading ? (
-                    <span className="inline-flex h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                  ) : (
-                    <span>Lihat Riwayat Analisis</span>
-                  )}
+                  <span>Lihat Riwayat Analisis</span>
                 </button>
               </>
             ) : (

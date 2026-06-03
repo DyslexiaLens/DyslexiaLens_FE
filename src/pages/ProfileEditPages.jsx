@@ -164,6 +164,41 @@ function InputShell({ leftIcon, rightIcon, onRightIconClick, rightIconAriaLabel,
   )
 }
 
+function SelectShell({ leftIcon, value, onChange, isDark, options = [], placeholder, disabled, inputClassName = '', ...selectProps }) {
+  const baseClass = isDark
+    ? 'h-10 w-full rounded-[10px] border border-[#4b5563] bg-[#424c5f] pl-10 pr-10 text-sm text-[#f8fafc] outline-none transition focus:border-[#60a5fa] focus:ring-2 focus:ring-[#2b7fff] focus:ring-offset-2 appearance-none'
+    : 'h-10 w-full rounded-[10px] border border-[#e5e7eb] bg-white pl-10 pr-10 text-sm text-[#101828] outline-none transition focus:border-[#3b82f6] focus:ring-2 focus:ring-[#2b7fff] focus:ring-offset-2 appearance-none'
+
+  const iconColor = isDark ? 'text-[#cbd5e1]' : 'text-[#94a3b8]'
+
+  return (
+    <div className="relative">
+      <span className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 ${iconColor}`}>
+        {leftIcon}
+      </span>
+      <select
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        className={`${baseClass} ${inputClassName}`}
+        {...selectProps}
+      >
+        {placeholder && <option value="" disabled>{placeholder}</option>}
+        {options.map((opt) => (
+          <option key={opt} value={opt} className={isDark ? 'bg-[#243047] text-white' : 'bg-white text-black'}>
+            {opt}
+          </option>
+        ))}
+      </select>
+      <span className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 ${iconColor}`}>
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </span>
+    </div>
+  )
+}
+
 function ErrorText({ children }) {
   return <p className="mt-2 text-[14px] leading-[20px] text-[#e7000b]">{children}</p>
 }
@@ -580,6 +615,31 @@ export function EditAddressPage() {
   const [errors, setErrors] = React.useState({})
   const [loading, setLoading] = React.useState(false)
 
+  const countryCities = {
+    'Indonesia': ['Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar', 'Semarang', 'Yogyakarta', 'Palembang', 'Tangerang', 'Bekasi', 'Depok', 'Bogor'],
+    'Malaysia': ['Kuala Lumpur', 'Penang', 'Johor Bahru', 'Malacca', 'Ipoh'],
+    'Singapura': ['Singapore'],
+  }
+
+  const defaultCountries = ['Indonesia', 'Malaysia', 'Singapura']
+
+  const countryOptions = React.useMemo(() => {
+    if (values.country && !defaultCountries.includes(values.country)) {
+      return [values.country, ...defaultCountries]
+    }
+    return defaultCountries
+  }, [values.country])
+
+  const cityOptions = React.useMemo(() => {
+    const list = countryCities[values.country] || [
+      'Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Makassar', 'Semarang', 'Yogyakarta', 'Palembang', 'Tangerang', 'Bekasi', 'Depok', 'Bogor'
+    ]
+    if (values.city && !list.includes(values.city)) {
+      return [values.city, ...list]
+    }
+    return list
+  }, [values.country, values.city])
+
   React.useEffect(() => {
     let mounted = true
 
@@ -623,7 +683,8 @@ export function EditAddressPage() {
     else if (!isLettersAndSpaces(city)) nextErrors.city = 'Kota hanya boleh huruf'
 
     if (!postalCode) nextErrors.postalCode = 'Kode pos tidak boleh kosong'
-    else if (!/^\d{5}$/.test(postalCode)) nextErrors.postalCode = 'Kode pos harus 5 digit'
+    else if (/[^\d]/.test(postalCode)) nextErrors.postalCode = 'Kode pos hanya boleh berisi angka'
+    else if (postalCode.length !== 5) nextErrors.postalCode = 'Kode pos harus 5 digit'
 
     return nextErrors
   }
@@ -659,18 +720,21 @@ export function EditAddressPage() {
         <div>
           <FieldLabel isDark={isDark}>Negara</FieldLabel>
           <div className="mt-2">
-            <InputShell
+            <SelectShell
               leftIcon={<LocationIcon />}
-              placeholder="Masukkan nama negara"
+              placeholder="Pilih negara"
               isDark={isDark}
-              autoComplete="country-name"
               value={values.country}
               onChange={(event) => {
-                const nextValues = { ...values, country: event.target.value }
+                const nextCountry = event.target.value
+                const cities = countryCities[nextCountry] || []
+                const nextCity = cities[0] || ''
+                const nextValues = { ...values, country: nextCountry, city: nextCity }
                 setValues(nextValues)
                 setErrors(validate(nextValues))
               }}
               disabled={loading}
+              options={countryOptions}
               inputClassName={inputClassName(errors.country)}
             />
           </div>
@@ -680,11 +744,10 @@ export function EditAddressPage() {
         <div>
           <FieldLabel isDark={isDark}>Kota</FieldLabel>
           <div className="mt-2">
-            <InputShell
+            <SelectShell
               leftIcon={<BuildingIcon />}
-              placeholder="Masukkan nama kota"
+              placeholder="Pilih kota"
               isDark={isDark}
-              autoComplete="address-level2"
               value={values.city}
               onChange={(event) => {
                 const nextValues = { ...values, city: event.target.value }
@@ -692,6 +755,7 @@ export function EditAddressPage() {
                 setErrors(validate(nextValues))
               }}
               disabled={loading}
+              options={cityOptions}
               inputClassName={inputClassName(errors.city)}
             />
           </div>

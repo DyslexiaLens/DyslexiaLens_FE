@@ -12,7 +12,7 @@ body,
   --brand-blue: #155dfc;
   --brand-purple: #9810fa;
   --brand-pink: #e60076;
-  --page-bg: #f9fafb;
+  --page-bg: #E5E7EB;
   --surface: #ffffff;
   --surface-soft: #f9fafb;
   --surface-muted: #e5e7eb;
@@ -178,9 +178,12 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+:root[data-accessibility-font="dyslexia"] * {
+  font-family: "OpenDyslexic", "Comic Sans MS", "Chalkboard SE", "Trebuchet MS", sans-serif !important;
+}
+
 :root[data-accessibility-font="dyslexia"] body {
-  font-family: "Trebuchet MS", "Verdana", "Segoe UI", Arial, sans-serif;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.012em;
   word-spacing: 0.04em;
 }
 

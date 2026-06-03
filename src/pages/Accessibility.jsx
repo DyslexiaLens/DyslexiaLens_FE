@@ -98,10 +98,10 @@ export default function AccessibilityPage() {
   const navigate = useNavigate()
   const isDark = theme === 'dark'
   const [savedState, setSavedState] = React.useState(true)
+  const [showToast, setShowToast] = React.useState(false)
 
-  React.useEffect(() => {
-    setSavedState(true)
-  }, [accessibility])
+  // Track initial accessibility settings on mount to support reversion
+  const initialSettingsRef = React.useRef({ ...accessibility })
 
   const textScale = Math.max(80, Math.min(120, accessibility.textSize || 100))
   const sliderPercent = ((textScale - 80) / 40) * 100
@@ -113,13 +113,24 @@ export default function AccessibilityPage() {
     : 'bg-white border-[#e5e7eb] text-[#101828] shadow-[0px_20px_40px_rgba(15,23,42,0.12)]'
 
   const handleSave = () => {
+    // Explicitly write the saved accessibility settings to local storage
+    window.localStorage.setItem('dyslexialens-accessibility', JSON.stringify(accessibility))
+    initialSettingsRef.current = { ...accessibility }
     setSavedState(true)
+    setShowToast(true)
+    window.setTimeout(() => setShowToast(false), 3000)
+  }
+
+  const handleCancel = (e) => {
+    if (e) e.preventDefault()
+    // Revert visual settings to original values
+    updateAccessibility(initialSettingsRef.current)
+    navigate(isLoggedIn ? "/profile" : "/")
   }
 
   const handleReset = () => {
     resetAccessibility()
     setSavedState(false)
-    window.setTimeout(() => setSavedState(true), 0)
   }
 
   const toggleAccessibility = (key) => {
@@ -129,11 +140,23 @@ export default function AccessibilityPage() {
 
   return (
     <div className={`px-4 py-8 transition-colors duration-300 sm:px-6 lg:px-0 lg:py-12 ${pageClass}`}>
+      {showToast && (
+        <div className="fixed bottom-5 right-5 z-50 flex items-center gap-3 rounded-[12px] bg-[#00c950] px-4 py-3 text-white shadow-lg animate-float">
+          <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span className="text-sm font-semibold">Preferensi berhasil disimpan!</span>
+        </div>
+      )}
       <div className="mx-auto flex max-w-[896px] flex-col gap-5 sm:gap-6">
-        <Link to={isLoggedIn ? "/profile" : "/"} className={`inline-flex items-center gap-2 text-sm ${isDark ? 'text-[#cbd5e1]' : 'text-[#364153]'}`}>
+        <button
+          type="button"
+          onClick={handleCancel}
+          className={`inline-flex items-center gap-2 text-sm transition hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2b7fff] rounded-md ${isDark ? 'text-[#cbd5e1]' : 'text-[#364153]'}`}
+        >
           <BackIcon />
           <span>Kembali</span>
-        </Link>
+        </button>
 
         <section className={`overflow-hidden rounded-[16px] border transition-colors duration-300 ${cardClass}`}>
           <div className={`border-b px-6 py-6 sm:px-8 ${isDark ? 'border-[#364153]' : 'border-[#e5e7eb]/70'}`}>
@@ -247,10 +270,21 @@ export default function AccessibilityPage() {
                   size="sm"
                   isDark={isDark}
                   onClick={handleReset}
-                  className="!rounded-[8px] !h-10"
+                  className="!rounded-[8px] !h-10 sm:flex-1"
                 >
                   Reset ke Default
                 </Button>
+                {!savedState && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    isDark={isDark}
+                    onClick={handleCancel}
+                    className="!rounded-[8px] !h-10 sm:flex-1"
+                  >
+                    Batal
+                  </Button>
+                )}
                 <Button
                   variant="primary"
                   size="sm"

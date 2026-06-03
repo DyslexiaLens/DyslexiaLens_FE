@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, MotionConfig } from 'framer-motion'
 import { PageTransition } from './components/ui/PageTransition'
+import { AppContext } from './context/AppContext'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -29,35 +30,43 @@ function wrap(element) {
 
 export default function App() {
   const location = useLocation()
+  const { accessibility } = useContext(AppContext)
+
+  // Scroll to top automatically when navigating to a new page
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
 
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--page-bg)] text-[var(--text-primary)] transition-colors duration-300">
-      <Header />
-      <main className="flex-1">
-        <AnimatePresence mode="wait" initial={false}>
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={wrap(<Home />)} />
-            <Route path="/login" element={wrap(<Login />)} />
-            <Route path="/register" element={wrap(<Register />)} />
-            <Route path="/forgot" element={wrap(<ForgotPassword />)} />
-            <Route path="/upload" element={wrap(<Upload />)} />
-            <Route path="/writing-tips" element={wrap(<PhotoTips />)} />
-            <Route path="/analyzing" element={wrap(<Analyzing />)} />
-            <Route path="/result" element={wrap(<Result />)} />
-            <Route path="/history" element={wrap(<History />)} />
-            <Route path="/help" element={wrap(<Help />)} />
-            <Route path="/profile" element={wrap(<Profile />)} />
-            <Route path="/profile/accessibility" element={wrap(<AccessibilityPage />)} />
-            <Route path="/profile/edit-info" element={wrap(<EditInformationPage />)} />
-            <Route path="/profile/edit-info/success" element={wrap(<ProfileInfoSuccessPage />)} />
-            <Route path="/profile/edit-password" element={wrap(<EditPasswordPage />)} />
-            <Route path="/profile/edit-password/success" element={wrap(<ProfilePasswordSuccessPage />)} />
-            <Route path="/profile/edit-address" element={wrap(<EditAddressPage />)} />
-            <Route path="/profile/edit-address/success" element={wrap(<ProfileAddressSuccessPage />)} />
-          </Routes>
-        </AnimatePresence>
-      </main>
-      <Footer />
-    </div>
+    <MotionConfig reducedMotion={accessibility?.reduceMotion ? 'always' : 'user'}>
+      <div className="flex min-h-screen flex-col bg-[var(--page-bg)] text-[var(--text-primary)] transition-colors duration-300">
+        <Header />
+        <main className="flex-1">
+          <AnimatePresence mode="wait" initial={false}>
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={wrap(<Home />)} />
+              <Route path="/login" element={wrap(<Login />)} />
+              <Route path="/register" element={wrap(<Register />)} />
+              <Route path="/forgot" element={wrap(<ForgotPassword />)} />
+              <Route path="/upload" element={wrap(<Upload />)} />
+              <Route path="/writing-tips" element={wrap(<PhotoTips />)} />
+              <Route path="/analyzing" element={wrap(<Analyzing />)} />
+              <Route path="/result" element={wrap(<Result />)} />
+              <Route path="/history" element={wrap(<History />)} />
+              <Route path="/help" element={wrap(<Help />)} />
+              <Route path="/profile" element={wrap(<Profile />)} />
+              <Route path="/profile/accessibility" element={wrap(<AccessibilityPage />)} />
+              <Route path="/profile/edit-info" element={wrap(<EditInformationPage />)} />
+              <Route path="/profile/edit-info/success" element={wrap(<ProfileInfoSuccessPage />)} />
+              <Route path="/profile/edit-password" element={wrap(<EditPasswordPage />)} />
+              <Route path="/profile/edit-password/success" element={wrap(<ProfilePasswordSuccessPage />)} />
+              <Route path="/profile/edit-address" element={wrap(<EditAddressPage />)} />
+              <Route path="/profile/edit-address/success" element={wrap(<ProfileAddressSuccessPage />)} />
+            </Routes>
+          </AnimatePresence>
+        </main>
+        <Footer />
+      </div>
+    </MotionConfig>
   )
 }

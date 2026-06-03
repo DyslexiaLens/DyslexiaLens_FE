@@ -86,7 +86,7 @@ function TipCard({ icon, title, description, theme, iconBgLight, iconBgDark, tit
 }
 
 export default function Help() {
-  const { theme } = useContext(AppContext)
+  const { theme, isLoggedIn } = useContext(AppContext)
   const navigate = useNavigate()
   const isDark = theme === 'dark'
   const [openFaq, setOpenFaq] = useState(null)
@@ -212,7 +212,7 @@ export default function Help() {
                 variant="primary"
                 size="md"
                 isDark={isDark}
-                onClick={() => navigate('/writing-tips')}
+                onClick={() => navigate(isLoggedIn ? '/writing-tips' : '/login')}
                 className="!rounded-[8px]"
                 rightIcon={
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

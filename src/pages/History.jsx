@@ -44,7 +44,8 @@ function formatHistoryTime(value) {
 
 function normalizeHistoryItem(item) {
   const isDetection = Boolean(item.predicted_text)
-  const fileName = item.image_url ? item.image_url.split('/').pop() : 'upload-image'
+  const cleanImageUrl = item.image_url ? item.image_url.replace(/\\/g, '/') : ''
+  const fileName = cleanImageUrl ? cleanImageUrl.split('/').pop() : 'upload-image'
 
   let severityScore = null
   if (item.raw_response) {
@@ -86,14 +87,20 @@ function mapHistoryMode(item) {
 }
 
 function mapHistoryFileName(item) {
-  return item.fileName || item.imageUrl?.split('/').pop() || 'upload-image'
+  const cleanImageUrl = item.imageUrl ? item.imageUrl.replace(/\\/g, '/') : ''
+  return item.fileName || cleanImageUrl.split('/').pop() || 'upload-image'
 }
 
 function mapResultLabel(label) {
   if (!label) return 'Selesai'
-  if (label === 'LIKELY_DYSLEXIA_PATTERN') return 'Tinggi'
-  if (label === 'MILD_DYSLEXIA_PATTERN') return 'Sedang'
-  return label
+  const clean = String(label).toUpperCase().trim()
+  if (clean.includes('DYSLEXIA') || clean.includes('DYSLEXIC')) {
+    return 'Ada Indikasi'
+  }
+  if (clean.includes('NORMAL')) {
+    return 'Umum (Normal)'
+  }
+  return 'Selesai'
 }
 
 /* ── Small helper: Badge ──────────────────────────────────────────────────── */
@@ -131,11 +138,10 @@ function Toast({ show, message, type, isDark }) {
       aria-live="polite"
     >
       <div
-        className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-lg border ${
-          isSuccess
+        className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-lg border ${isSuccess
             ? isDark ? 'bg-green-900/90 border-green-700 text-green-100' : 'bg-green-50 border-green-200 text-green-800'
             : isDark ? 'bg-red-900/90 border-red-700 text-red-100' : 'bg-red-50 border-red-200 text-red-800'
-        }`}
+          }`}
       >
         <div className={`w-6 h-6 rounded-full flex items-center justify-center ${isSuccess ? 'bg-green-500' : 'bg-red-500'} text-white`}>
           {isSuccess ? (
@@ -283,11 +289,10 @@ export default function History() {
   const pageBgCls = isDark ? 'bg-[#0f172a] text-white' : 'bg-[#E5E7EB] text-gray-900'
   const cardCls = `interactive-card group w-full p-6 rounded-2xl shadow-sm border hover:shadow-md ${isDark ? 'bg-[#1e2939] border-gray-700' : 'bg-white border-gray-100'}`
   const subTextCls = isDark ? 'text-gray-400' : 'text-gray-500'
-  const inputCls = `w-full h-11 pl-10 pr-4 rounded-lg border text-sm font-medium transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#2b7fff] focus-visible:ring-offset-1 ${
-    isDark
+  const inputCls = `w-full h-11 pl-10 pr-4 rounded-lg border text-sm font-medium transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#2b7fff] focus-visible:ring-offset-1 ${isDark
       ? 'bg-[#0f172a] border-gray-700 text-white focus:border-[#2b7fff] focus-visible:ring-offset-[#0f172a]'
       : 'bg-white border-gray-300 text-gray-900 focus:border-[#2b7fff] focus-visible:ring-offset-white'
-  }`
+    }`
 
   return (
     <div className={`min-h-[calc(100vh-64px)] p-6 md:p-10 ${pageBgCls} relative transition-colors duration-300`}>
@@ -365,11 +370,10 @@ export default function History() {
                 role="tab"
                 aria-selected={activeTab === tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-2 rounded-md text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2b7fff] ${
-                  activeTab === tab.id
+                className={`px-4 py-2 rounded-md text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2b7fff] ${activeTab === tab.id
                     ? isDark ? 'bg-[#2b7fff] text-white' : 'bg-white text-gray-900 shadow-sm'
                     : isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 {tab.label}
               </button>
@@ -430,9 +434,15 @@ export default function History() {
                       {mapHistoryMode(item) === 'detect' ? (
                         <div className="flex items-center gap-2.5">
                           <span className="text-lg font-bold text-blue-500 font-mono">{item.score}</span>
-                          <Badge color={item.indication === 'Tinggi' ? 'red' : 'amber'}>
-                            {mapResultLabel(item.indication)}
-                          </Badge>
+                          {(() => {
+                            const labelText = mapResultLabel(item.indication)
+                            const badgeColor = labelText === 'Ada Indikasi' ? 'red' : 'green'
+                            return (
+                              <Badge color={badgeColor}>
+                                {labelText}
+                              </Badge>
+                            )
+                          })()}
                         </div>
                       ) : (
                         <Badge color="green">Selesai</Badge>
@@ -496,13 +506,12 @@ export default function History() {
                           onClick={() => setCurrentPage(pageNum)}
                           aria-label={`Halaman ${pageNum}`}
                           aria-current={currentPage === pageNum ? 'page' : undefined}
-                          className={`w-9 h-9 rounded-lg text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-                            currentPage === pageNum
+                          className={`w-9 h-9 rounded-lg text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${currentPage === pageNum
                               ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                               : isDark
                                 ? 'text-gray-400 hover:text-white hover:bg-gray-800'
                                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                          }`}
+                            }`}
                         >
                           {pageNum}
                         </button>
