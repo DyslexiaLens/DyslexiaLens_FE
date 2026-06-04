@@ -37,7 +37,7 @@ function resolveImageUrl(imageUrl) {
 
 function getFriendlyResultLabel(label, isDetection) {
   if (!isDetection) return 'Proses Terjemahan Selesai'
-  
+
   const clean = String(label || '').toUpperCase().trim()
   if (clean.includes('DYSLEXIA') || clean.includes('DYSLEXIC')) {
     return 'Terdeteksi Pola Disleksia'
@@ -59,7 +59,7 @@ function getFriendlySeverityLevel(level) {
 
 function getFriendlyNotes(notes) {
   if (!notes) return 'Hasil analisis berhasil disimpan ke riwayat.'
-  
+
   const clean = String(notes)
   if (clean.includes('Mock AI') || clean.includes('model inference') || clean.includes('Replace this service')) {
     return 'Hasil observasi awal dari sampel tulisan tangan telah selesai diproses. Nilai persentase menunjukkan tingkat kemiripan pola tulisan dengan indikasi disleksia.'
@@ -105,10 +105,10 @@ export default function Result() {
   const predictedText = analysis?.predictedText || historyItem?.predicted_text || ''
   const sourceText = analysis?.sourceText || historyItem?.source_text || predictedText
   const translatedText = analysis?.translatedText || historyItem?.translated_text || ''
-  
+
   const rawResultLabel = analysis?.resultLabel || historyItem?.result_label || (isDetection ? 'Selesai' : 'Selesai')
   const resultLabel = getFriendlyResultLabel(rawResultLabel, isDetection)
-  
+
   const rawNotes = analysis?.notes || historyItem?.notes || 'Hasil analisis berhasil disimpan ke riwayat.'
   const notes = getFriendlyNotes(rawNotes)
 
@@ -271,7 +271,7 @@ export default function Result() {
             <section className={cardCls}>
               <h2 className="mb-3 text-lg font-bold">Catatan Hasil Analisis</h2>
               <p className={`mb-6 ${subTextCls}`}>{notes}</p>
-              
+
               <div className={`mt-6 rounded-xl border p-5 ${isDark ? 'bg-[#182232] border-gray-700' : 'bg-blue-50/50 border-blue-100'}`}>
                 <h3 className="mb-4 flex items-center gap-2 font-bold text-blue-600 dark:text-blue-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0" aria-hidden="true">
@@ -279,10 +279,20 @@ export default function Result() {
                   </svg>
                   Panduan Membaca Hasil Analisis
                 </h3>
-                
+
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="flex gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">1</span>
+                    <span
+                      className={`
+                        flex h-8 w-8 shrink-0 items-center justify-center rounded-lg
+                        ${theme === 'dark'
+                          ? 'bg-blue-900/40 text-blue-400'
+                          : 'bg-blue-200 text-blue-700'}
+                        font-bold text-sm
+                      `}
+                    >
+                      1
+                    </span>
                     <div>
                       <h4 className="text-sm font-semibold mb-1">Skor Indikasi ({severityScore}%)</h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
@@ -292,11 +302,21 @@ export default function Result() {
                   </div>
 
                   <div className="flex gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">2</span>
+                    <span
+                      className={`
+                        flex h-8 w-8 shrink-0 items-center justify-center rounded-lg
+                        ${theme === 'dark'
+                          ? 'bg-blue-900/40 text-blue-400'
+                          : 'bg-blue-200 text-blue-700'}
+                        font-bold text-sm
+                      `}
+                    >
+                      2
+                    </span>
                     <div>
                       <h4 className="text-sm font-semibold mb-1">Tingkat Keparahan ({severityLevel || 'Rendah/Umum'})</h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
-                        {severityLevel?.includes('Tinggi') 
+                        {severityLevel?.includes('Tinggi')
                           ? 'Kategori Tinggi: Pola tulisan menunjukkan indikasi disleksia yang kuat. Sangat disarankan berkonsultasi dengan psikolog anak atau guru pendamping khusus untuk bimbingan terarah.'
                           : severityLevel?.includes('Sedang')
                             ? 'Kategori Sedang: Terdapat beberapa ciri disleksia. Disarankan melatih keterampilan menulis secara berkala menggunakan metode multisensori (visual & kinestetik).'
@@ -307,7 +327,14 @@ export default function Result() {
                   </div>
 
                   <div className="flex gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">3</span>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-bold text-sm ${isDark
+                        ? 'bg-blue-900/40 text-blue-400'
+                        : 'bg-blue-200 text-blue-700'
+                        }`}
+                    >
+                      3
+                    </span>
                     <div>
                       <h4 className="text-sm font-semibold mb-1">Teks OCR (Hasil Pengenalan Kata)</h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
@@ -317,9 +344,21 @@ export default function Result() {
                   </div>
 
                   <div className="flex gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 dark:text-yellow-400 font-bold text-sm">!</span>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-bold text-sm ${isDark
+                        ? 'bg-yellow-900/40 text-yellow-400'
+                        : 'bg-amber-100 border border-amber-300 text-amber-800'
+                        }`}
+                    >
+                      !
+                    </span>
                     <div>
-                      <h4 className="text-sm font-semibold text-yellow-700 dark:text-yellow-400 mb-1">Catatan Penting</h4>
+                      <h4
+                        className={`text-sm font-bold mb-1 ${isDark ? 'text-yellow-400' : 'text-amber-900'
+                          }`}
+                      >
+                        Catatan Penting
+                      </h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
                         <strong>PENTING:</strong> Hasil analisis ini bersifat <strong>skrining awal</strong> dan <strong>BUKAN</strong> diagnosis medis final. Hanya dokter anak atau ahli psikologi klinis yang berhak menetapkan diagnosis formal.
                       </p>
@@ -352,7 +391,7 @@ export default function Result() {
             <section className={cardCls}>
               <h2 className="mb-3 text-lg font-bold">Catatan Hasil Terjemahan</h2>
               <p className={`mb-6 ${subTextCls}`}>{notes}</p>
-              
+
               <div className={`mt-6 rounded-xl border p-5 ${isDark ? 'bg-[#182232] border-gray-700' : 'bg-blue-50/50 border-blue-100'}`}>
                 <h3 className="mb-4 flex items-center gap-2 font-bold text-blue-600 dark:text-blue-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0" aria-hidden="true">
@@ -360,10 +399,20 @@ export default function Result() {
                   </svg>
                   Panduan Membaca Hasil Terjemahan
                 </h3>
-                
+
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="flex gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">1</span>
+                    <span
+                      className={`
+                        flex h-8 w-8 shrink-0 items-center justify-center rounded-lg
+                        ${theme === 'dark'
+                          ? 'bg-blue-900/40 text-blue-400'
+                          : 'bg-blue-200 text-blue-700'}
+                        font-bold text-sm
+                      `}
+                    >
+                      1
+                    </span>
                     <div>
                       <h4 className="text-sm font-semibold mb-1">Teks Hasil Terjemahan</h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
@@ -373,7 +422,17 @@ export default function Result() {
                   </div>
 
                   <div className="flex gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">2</span>
+                    <span
+                      className={`
+                        flex h-8 w-8 shrink-0 items-center justify-center rounded-lg
+                        ${theme === 'dark'
+                          ? 'bg-blue-900/40 text-blue-400'
+                          : 'bg-blue-200 text-blue-700'}
+                        font-bold text-sm
+                      `}
+                    >
+                      2
+                    </span>
                     <div>
                       <h4 className="text-sm font-semibold mb-1">Manfaat Bagi Orang Tua/Guru</h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
@@ -383,7 +442,14 @@ export default function Result() {
                   </div>
 
                   <div className="flex gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold text-sm">3</span>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-bold text-sm ${isDark
+                        ? 'bg-blue-900/40 text-blue-400'
+                        : 'bg-blue-200 text-blue-700'
+                        }`}
+                    >
+                      3
+                    </span>
                     <div>
                       <h4 className="text-sm font-semibold mb-1">Langkah Evaluasi</h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
@@ -393,9 +459,21 @@ export default function Result() {
                   </div>
 
                   <div className="flex gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 dark:text-yellow-400 font-bold text-sm">!</span>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-bold text-sm ${isDark
+                        ? 'bg-yellow-900/40 text-yellow-400'
+                        : 'bg-amber-100 border border-amber-300 text-amber-800'
+                        }`}
+                    >
+                      !
+                    </span>
                     <div>
-                      <h4 className="text-sm font-semibold text-yellow-700 dark:text-yellow-400 mb-1">Catatan Koreksi</h4>
+                      <h4
+                        className={`text-sm font-bold mb-1 ${isDark ? 'text-yellow-400' : 'text-amber-900'
+                          }`}
+                      >
+                        Catatan Koreksi
+                      </h4>
                       <p className={`text-xs leading-relaxed ${subTextCls}`}>
                         Proses penerjemahan ini menggunakan kecerdasan buatan berbasis pola disleksia. Disarankan agar tetap membandingkan dengan foto asli apabila ada bagian kata yang kurang sesuai.
                       </p>

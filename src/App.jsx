@@ -20,6 +20,7 @@ import { ProfileAddressSuccessPage, ProfileInfoSuccessPage, ProfilePasswordSucce
 import About from './pages/About'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
+import NotFound from './pages/NotFound'
 import Header from './components/Header'
 import Footer from './components/Footer'
 
@@ -68,6 +69,7 @@ export default function App() {
               <Route path="/profile/edit-password/success" element={wrap(<ProfilePasswordSuccessPage />)} />
               <Route path="/profile/edit-address" element={wrap(<EditAddressPage />)} />
               <Route path="/profile/edit-address/success" element={wrap(<ProfileAddressSuccessPage />)} />
+              <Route path="*" element={wrap(<NotFound />)} />
             </Routes>
           </AnimatePresence>
         </main>
