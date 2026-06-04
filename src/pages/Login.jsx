@@ -56,6 +56,9 @@ export default function Login() {
       } catch (error) {
         const status = error.response?.status
         const message = error.response?.data?.message
+        const errorType = error.response?.data?.errorType
+        const remainingAttempts = error.response?.data?.remainingAttempts
+        const remainingMinutes = error.response?.data?.remainingMinutes
         const validationMessage = Array.isArray(error.response?.data?.errors)
           ? error.response.data.errors[0]?.msg
           : null
@@ -72,16 +75,30 @@ export default function Login() {
             title: 'Input Tidak Valid',
             message: validationMessage || message || 'Periksa kembali email dan password Anda.',
           })
-        } else if (status === 401) {
+        } else if (status === 404 && errorType === 'email_not_found') {
           setAuthError({
-            type: 'notfound',
-            title: 'Login Gagal',
-            message: 'Email atau password salah.',
+            type: 'email_not_found',
+            title: 'Email Tidak Terdaftar',
+            message: 'Email belum terdaftar. Silakan daftar terlebih dahulu.',
+          })
+        } else if (status === 401 && errorType === 'wrong_password') {
+          setAuthError({
+            type: 'wrong_password',
+            title: 'Password Salah',
+            message: `Password salah. Sisa percobaan: ${remainingAttempts} kali.`,
+            remainingAttempts,
+          })
+        } else if (status === 423 && errorType === 'account_locked') {
+          setAuthError({
+            type: 'locked',
+            title: 'Akun Terkunci',
+            message: `Akun Anda dikunci setelah 3 kali percobaan gagal. Coba lagi dalam ${remainingMinutes} menit.`,
+            remainingMinutes,
           })
         } else {
           setAuthError({
-            type: 'notfound',
-            title: 'Login Gagal',
+            type: 'server_error',
+            title: 'Kesalahan Server',
             message: message || 'Terjadi kesalahan. Silakan coba lagi.',
           })
         }
@@ -124,35 +141,41 @@ export default function Login() {
           </div>
 
           <form onSubmit={handleSubmit} className="px-5 sm:px-8 pb-6 sm:pb-8 pt-4 sm:pt-6">
-            {authError && authError.type === 'attempts-1' && (
-              <div ref={errorRef} className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[rgba(130,24,26,0.2)] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
-                <div className="flex items-start gap-3">
-                  <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
-                  <div>
-                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FFA2A2' : '#9F0712' }}>{authError.title}</div>
-                    <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FF6467' : '#C10007' }}>{authError.message}</div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {authError && authError.type === 'attempts-2' && (
-              <div ref={errorRef} className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[rgba(130,24,26,0.2)] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
-                <div className="flex items-start gap-3">
-                  <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
-                  <div>
-                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FFA2A2' : '#9F0712' }}>{authError.title}</div>
-                    <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FF6467' : '#C10007' }}>{authError.message}</div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {authError && authError.type === 'notfound' && (
+            {authError && authError.type === 'email_not_found' && (
               <div ref={errorRef} className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[#82181A33] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
                 <div className="flex items-start gap-3">
                   <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
                   <div>
-                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FF6467' : '#9F0712' }}>{authError.title || 'Login gagal'}</div>
-                    <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FFA2A2' : '#C10007' }}>{authError.message || 'Email tidak terdaftar. Silakan daftar terlebih dahulu atau gunakan email lain.'}</div>
+                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FF6467' : '#9F0712' }}>{authError.title}</div>
+                    <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FFA2A2' : '#C10007' }}>{authError.message}</div>
+                    <Link to="/register" className="mt-2 block" style={{ color: theme === 'dark' ? '#51A2FF' : '#155DFC', fontSize: '14px', fontWeight: 400 }}>
+                      Daftar sekarang
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+            {authError && authError.type === 'wrong_password' && (
+              <div ref={errorRef} className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[#82181A33] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
+                <div className="flex items-start gap-3">
+                  <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
+                  <div>
+                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FF6467' : '#9F0712' }}>{authError.title}</div>
+                    <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FFA2A2' : '#C10007' }}>{authError.message}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {authError && authError.type === 'locked' && (
+              <div ref={errorRef} className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[#82181A33] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
+                <div className="flex items-start gap-3">
+                  <img src={RedX} alt="locked" className="h-5 w-5 mt-1" />
+                  <div>
+                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FF6467' : '#9F0712' }}>{authError.title}</div>
+                    <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FFA2A2' : '#C10007' }}>{authError.message}</div>
+                    <Link to="/forgot" className="mt-2 block" style={{ color: theme === 'dark' ? '#51A2FF' : '#155DFC', fontSize: '14px', fontWeight: 400 }}>
+                      Reset password sekarang
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -168,16 +191,24 @@ export default function Login() {
                 </div>
               </div>
             )}
-            {authError && authError.type === 'locked' && (
+            {authError && authError.type === 'connection' && (
               <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[#82181A33] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
                 <div className="flex items-start gap-3">
-                  <img src={RedX} alt="locked" className="h-5 w-5 mt-1" />
+                  <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
                   <div>
-                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FF6467' : '#9F0712' }}>{authError.title || 'Akun Terkunci'}</div>
-                        <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FFA2A2' : '#C10007' }}>{authError.message || 'Akun Anda dikunci setelah 3 kali percobaan password salah. Silakan reset password atau hubungi dukungan.'}</div>
-                        <Link to="/forgot" className="mt-2 block" style={{ color: theme === 'dark' ? '#51A2FF' : '#155DFC', fontSize: '14px', fontFamily: 'Segoe UI Emoji', fontWeight: 400, lineHeight: '20px', wordWrap: 'break-word' }}>
-                          Reset password sekarang
-                        </Link>
+                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FFA2A2' : '#9F0712' }}>{authError.title}</div>
+                    <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FF6467' : '#C10007' }}>{authError.message}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {authError && authError.type === 'server_error' && (
+              <div className={`mb-4 rounded-[14px] p-4 border-[0.727px] ${theme === 'dark' ? 'bg-[#82181A33] border-[#C10007]' : 'bg-[#FEF2F2] border-[#FF6467]'}`}>
+                <div className="flex items-start gap-3">
+                  <img src={RedX} alt="error" className="h-5 w-5 mt-1" />
+                  <div>
+                    <div className="font-medium" style={{ color: theme === 'dark' ? '#FFA2A2' : '#9F0712' }}>{authError.title}</div>
+                    <div className="mt-1 text-sm" style={{ color: theme === 'dark' ? '#FF6467' : '#C10007' }}>{authError.message}</div>
                   </div>
                 </div>
               </div>
