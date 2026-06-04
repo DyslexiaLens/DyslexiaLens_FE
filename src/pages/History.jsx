@@ -182,6 +182,7 @@ export default function History() {
   // State
   const [historyList, setHistoryList] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [loadError, setLoadError] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState('all')
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -206,10 +207,12 @@ export default function History() {
 
         if (mounted) {
           setHistoryList(mapHistoryItems(histories))
+          setLoadError(null)
         }
       } catch {
         if (mounted) {
           setHistoryList([])
+          setLoadError('Gagal memuat riwayat. Periksa koneksi internet Anda.')
         }
       } finally {
         if (mounted) {
@@ -261,11 +264,25 @@ export default function History() {
   }
 
   const handleClearAll = () => {
-    Promise.all(historyList.map((item) => deleteHistoryRequest(item.id))).then(() => {
-      setHistoryList([])
-      triggerToast('Seluruh riwayat analisis berhasil dihapus!')
-    }).catch(() => {
-      triggerToast('Gagal menghapus seluruh riwayat.', 'error')
+    const deletePromises = historyList.map((item) => deleteHistoryRequest(item.id).then(() => item.id))
+
+    Promise.allSettled(deletePromises).then((results) => {
+      const deletedIds = results
+        .filter((r) => r.status === 'fulfilled')
+        .map((r) => r.value)
+      const failedCount = results.filter((r) => r.status === 'rejected').length
+
+      if (deletedIds.length > 0) {
+        setHistoryList((prev) => prev.filter((item) => !deletedIds.includes(item.id)))
+      }
+
+      if (failedCount === 0) {
+        triggerToast('Seluruh riwayat analisis berhasil dihapus!')
+      } else if (deletedIds.length > 0) {
+        triggerToast(`${deletedIds.length} riwayat berhasil dihapus. ${failedCount} riwayat gagal dihapus.`, 'error')
+      } else {
+        triggerToast('Gagal menghapus seluruh riwayat.', 'error')
+      }
     }).finally(() => {
       setShowClearAllModal(false)
     })
@@ -390,6 +407,25 @@ export default function History() {
               <HistoryCardSkeleton isDark={isDark} />
               <HistoryCardSkeleton isDark={isDark} />
             </>
+          ) : loadError ? (
+            /* ── Error State ── */
+            <div className={`rounded-[16px] border p-8 text-center ${isDark ? 'bg-[#1e2939] border-gray-700' : 'bg-white border-gray-100'}`}>
+              <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${isDark ? 'bg-red-500/10' : 'bg-red-50'}`}>
+                <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Gagal Memuat Riwayat</h3>
+              <p className={`text-sm mb-4 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{loadError}</p>
+              <Button
+                variant="primary"
+                size="md"
+                isDark={isDark}
+                onClick={() => window.location.reload()}
+              >
+                Muat Ulang
+              </Button>
+            </div>
           ) : currentItems.length > 0 ? (
             <>
               {currentItems.map((item) => (

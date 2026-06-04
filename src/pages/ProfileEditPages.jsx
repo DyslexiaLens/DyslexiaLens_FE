@@ -67,10 +67,6 @@ function HashIcon() {
   )
 }
 
-function isEmail(v) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || '').trim())
-}
-
 function isLettersAndSpaces(v) {
   return /^[A-Za-z\s]+$/.test(String(v || '').trim())
 }
@@ -253,7 +249,6 @@ export function EditInformationPage() {
     const nextErrors = {}
     const firstName = nextValues.firstName.trim()
     const lastName = nextValues.lastName.trim()
-    const email = nextValues.email.trim()
 
     if (!firstName) nextErrors.firstName = 'Nama depan tidak boleh kosong'
     else if (firstName.length < 2) nextErrors.firstName = 'Nama depan minimal 2 karakter'
@@ -261,9 +256,6 @@ export function EditInformationPage() {
 
     if (lastName && lastName.length < 2) nextErrors.lastName = 'Nama belakang minimal 2 karakter'
     else if (lastName && !isLettersAndSpaces(lastName)) nextErrors.lastName = 'Nama belakang hanya boleh huruf'
-
-    if (!email) nextErrors.email = 'Email tidak boleh kosong'
-    else if (!isEmail(email)) nextErrors.email = 'Format email tidak valid'
 
     return nextErrors
   }
@@ -395,10 +387,10 @@ export function EditPasswordPage() {
     const confirmPassword = nextValues.confirmPassword.trim()
 
     if (!currentPassword) nextErrors.currentPassword = 'Password saat ini tidak boleh kosong'
-    else if (currentPassword.length < 6) nextErrors.currentPassword = 'Password saat ini minimal 6 karakter'
+    else if (currentPassword.length < 8) nextErrors.currentPassword = 'Password saat ini minimal 8 karakter'
 
     if (!newPassword) nextErrors.newPassword = 'Password baru tidak boleh kosong'
-    else if (newPassword.length < 6) nextErrors.newPassword = 'Password baru minimal 6 karakter'
+    else if (newPassword.length < 8) nextErrors.newPassword = 'Password baru minimal 8 karakter'
 
     if (!confirmPassword) nextErrors.confirmPassword = 'Konfirmasi password tidak boleh kosong'
     else if (confirmPassword !== newPassword) nextErrors.confirmPassword = 'Konfirmasi password tidak sesuai'
@@ -430,10 +422,18 @@ export function EditPasswordPage() {
             navigate('/profile/edit-password/success', { replace: true })
           }
         } catch (error) {
-          setErrors((current) => ({
-            ...current,
-            submit: error.response?.data?.message || 'Gagal mengubah password',
-          }))
+          const message = error.response?.data?.message || 'Gagal mengubah password'
+          if (message.toLowerCase().includes('current password') || message.toLowerCase().includes('password saat ini')) {
+            setErrors((current) => ({
+              ...current,
+              currentPassword: 'Password saat ini tidak sesuai',
+            }))
+          } else {
+            setErrors((current) => ({
+              ...current,
+              submit: message,
+            }))
+          }
         } finally {
           setLoading(false)
         }

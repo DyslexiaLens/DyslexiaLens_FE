@@ -81,7 +81,7 @@ const ERROR_CONFIG = {
 function validateFile(file) {
   const name = file.name.toLowerCase()
   const ext = name.split('.').pop()
-  const maxBytes = 10 * 1024 * 1024
+  const maxBytes = 5 * 1024 * 1024
 
   if (!['jpg', 'jpeg', 'png'].includes(ext)) return 'format'
   if (file.size > maxBytes) return 'size'
@@ -171,7 +171,7 @@ export default function Upload() {
   // ── Computed error values ──────────────────────────────────────────────────
   const errorCfg = errorType ? ERROR_CONFIG[errorType] : null
   const errorMsg = errorType === 'size'
-    ? 'Ukuran file terlalu besar. Maksimal 10MB.'
+    ? 'Ukuran file terlalu besar. Maksimal 5MB.' 
     : errorType === 'scan'
       ? 'Kertas grid tidak terdeteksi. Ambil ulang foto dengan pencahayaan lebih baik, posisi lebih lurus, dan pastikan template resmi terlihat penuh.'
       : errorType === 'timeout'
@@ -450,7 +450,7 @@ export default function Upload() {
                 </div>
                 <div className="text-center">
                   <p className="font-semibold text-[18px] leading-[28px] text-[var(--text-primary)]">Upload Foto</p>
-                  <p className="text-[var(--text-muted)] text-[14px] leading-[20px]">JPG, PNG • Max 10MB</p>
+                   <p className="text-[var(--text-muted)] text-[14px] leading-[20px]">JPG, PNG • Max 5MB</p>
                 </div>
                 <button
                   id="btn-pick-file"

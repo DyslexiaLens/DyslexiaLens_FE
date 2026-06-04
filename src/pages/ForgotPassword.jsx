@@ -145,11 +145,25 @@ export default function ForgotPassword() {
       })
       setStep(3)
     } catch (error) {
-      setOtpError({
-        type: 'invalid',
-        title: 'OTP Salah',
-        message: error.response?.data?.message || 'OTP salah atau sudah kadaluarsa.',
-      })
+      if (!error.response) {
+        setOtpError({
+          type: 'connection',
+          title: 'Masalah Koneksi',
+          message: 'Koneksi bermasalah. Periksa internet lalu coba lagi.',
+        })
+      } else if (error.response.status >= 500) {
+        setOtpError({
+          type: 'server',
+          title: 'Server Bermasalah',
+          message: 'Server sedang bermasalah. Silakan coba lagi nanti.',
+        })
+      } else {
+        setOtpError({
+          type: 'invalid',
+          title: 'OTP Salah',
+          message: error.response?.data?.message || 'OTP salah atau sudah kadaluarsa.',
+        })
+      }
     } finally {
       setLoading(false)
     }
@@ -165,8 +179,8 @@ export default function ForgotPassword() {
 
     if (!password) {
       nextErrors.password = 'Password baru tidak boleh kosong'
-    } else if (password.length < 6) {
-      nextErrors.password = 'Password minimal 6 karakter'
+    } else if (password.length < 8) {
+      nextErrors.password = 'Password minimal 8 karakter'
     } else if (!(/[a-z]/i.test(password) && /\d/.test(password))) {
       nextErrors.password = 'Password harus mengandung huruf dan angka'
     }

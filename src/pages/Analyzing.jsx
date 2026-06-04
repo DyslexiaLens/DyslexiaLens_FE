@@ -43,7 +43,7 @@ function normalizeUploadError(error, mode) {
 
 const getUploadErrorMessage = (type, fallbackMessage) => {
   if (type === 'size') {
-    return 'Ukuran file terlalu besar. Maksimal 10MB.'
+    return 'Ukuran file terlalu besar. Maksimal 5MB.'
   }
 
   if (type === 'scan') {
