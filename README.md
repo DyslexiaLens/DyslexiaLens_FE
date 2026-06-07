@@ -292,6 +292,49 @@ Aplikasi ini menggunakan Axios Interceptor untuk otomatis menyematkan `Bearer To
 
 ---
 
+## 📋 Checklist Progres Akhir Front-End
+
+Berikut adalah status implementasi fitur dan kebutuhan fungsional untuk bagian Front-End:
+
+- [x] **Autentikasi & Otorisasi Pengguna**
+  - [x] Registrasi akun baru dengan validasi format/kekuatan kata sandi
+  - [x] Masuk (Login) & penyimpanan session JWT secara aman
+  - [x] Fitur Lupa Kata Sandi (Kirim OTP via email)
+  - [x] Verifikasi OTP & Reset Sandi Baru
+  - [x] Integrasi Axios Interceptor untuk penyematan token otomatis dan penanganan token kedaluwarsa (401)
+- [x] **Manajemen Profil & Alamat**
+  - [x] Halaman edit informasi profil (Nama Lengkap, Telepon, Tanggal Lahir, Avatar)
+  - [x] Halaman edit alamat tempat tinggal (Kota, Kode Pos, Negara)
+  - [x] Fitur ganti kata sandi lama ke baru dengan verifikasi kode OTP
+  - [x] Halaman umpan balik sukses setelah pembaruan data berhasil
+- [x] **Pusat Aksesibilitas Khusus Disleksia**
+  - [x] Mode Kontras Tinggi (*High Contrast Mode*)
+  - [x] Penggantian Font Ramah Disleksia (*OpenDyslexic Font*)
+  - [x] Pengaturan Skala Ukuran Teks dinamis (80% - 120%)
+  - [x] Fitur Pengurangan Gerak (*Reduce Motion*) untuk mematikan animasi dekoratif
+- [x] **Layanan Deteksi & Analisis AI**
+  - [x] Halaman tips foto & petunjuk pengambilan gambar berkualitas
+  - [x] Form unggah foto mata / scan tulisan tangan
+  - [x] Halaman pemindaian animasi visual saat proses analisis berlangsung (`/analyzing`)
+  - [x] Halaman laporan hasil deteksi interaktif (skor probabilitas, rekomendasi langkah berikutnya)
+  - [x] Fitur unduh laporan hasil deteksi berformat PDF
+- [x] **Manajemen Riwayat Deteksi**
+  - [x] Halaman daftar riwayat deteksi pengguna
+  - [x] Fitur pencarian & penyaringan riwayat berdasarkan rentang tanggal
+  - [x] Fitur hapus item riwayat tertentu
+- [x] **Halaman Statis & Pusat Bantuan**
+  - [x] Halaman Pusat Bantuan & FAQ
+  - [x] Halaman Tentang Kami (*About*)
+  - [x] Halaman Kebijakan Privasi (*Privacy Policy*)
+  - [x] Halaman Syarat & Ketentuan (*Terms of Service*)
+- [x] **Optimalisasi & Deployment**
+  - [x] Desain responsif (*Mobile-First Approach*) untuk seluruh halaman
+  - [x] Penanganan rute tak dikenal (Halaman Error 404)
+  - [x] Konfigurasi routing SPA untuk deployment di Vercel (`vercel.json`)
+  - [x] Lulus pemeriksaan kerapihan kode (ESLint) tanpa error fatal
+
+---
+
 ## 🤝 Kontribusi
 
 Kontribusi selalu diterima! Jika Anda ingin memberikan perbaikan Bug, penambahan Fitur, atau optimalisasi desain:
